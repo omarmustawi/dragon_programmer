@@ -1,0 +1,167 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  input {
+    @apply p-3 bg-transparent border-b-4 border-white outline-none;
+  }
+  /* .search {
+    @apply p-3 bg-transparent border-b-4 border-white outline-none;
+  } */
+  .search:focus {
+    @apply border-b-4 border-green-400;
+  }
+  .btn {
+    @apply bg-orange-300 w-fit p-3 rounded-lg;
+  }
+  .btn:hover {
+    @apply bg-fuchsia-500 shadow-lg shadow-fuchsia-300;
+  }
+  .navbar {
+    @apply w-full absolute flex justify-between p-4 text-white text-lg z-10;
+  }
+  .navbarForSmallSize {
+    @apply text-white text-lg z-30 w-full h-16 fixed;
+  }
+  .ulSmallSize {
+    @apply flex flex-col items-center justify-center gap-4 p-7;
+  }
+  .postStyle {
+    @apply overflow-hidden max-h-24 lg:text-lg  text-zinc-600;
+  }
+  .rounded-input {
+    @apply border-slate-300 border-2 rounded-full p-3 px-5 outline-none;
+  }
+  .rounded-input:focus {
+    @apply border-pink-300;
+  }
+  .bg-loader {
+    @apply fixed bg-gray-300 w-screen h-screen z-30 opacity-90 flex;
+  }
+  .loader {
+    @apply m-auto border-solid border-ten animate-spin ease-in-out border-slate-200 rounded-full border-t-pink-500 w-52 h-52;
+  }
+  .loadingInner {
+    @apply fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl font-semibold text-pink-500;
+  }
+  .notice {
+    @apply w-full cursor-pointer p-3 px-6 border-b-2 border-gray-300 rounded-t-lg my-1 text-slate-600 text-lg;
+  }
+  .inputDas {
+    @apply block m-auto w-1/2 my-6 py-2 px-4 rounded-3xl placeholder:text-slate-800 border-zinc-400 border-2 focus:border-violet-500;
+  }
+  .btnDash {
+    @apply bg-dashbtn hover:bg-dashbtnHover text-white px-3 py-2 rounded-md;
+  }
+  .video-playlist {
+    @apply my-10 md:w-10/12 m-auto;
+  }
+  .video-item {
+    @apply bg-gray-600 my-1 rounded-xl p-2 w-10/12 m-auto text-white flex justify-between items-center cursor-pointer;
+  }
+}
+
+.loader {
+  animation-duration: 2s;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Handlee", cursive;
+  letter-spacing: 1.3px;
+}
+body {
+  overflow-x: hidden;
+}
+.active {
+  color: rgb(167, 4, 192);
+  font-weight: bolder;
+}
+
+.bg {
+  background-image: url("./images/h1_hero.png.webp");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: left top;
+  min-width: 100vw;
+  min-height: 100vh;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.bgIntro {
+  background-image: url("./images/h1_hero.png.webp");
+  background-position: right center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 70vh;
+}
+
+.bgNavbar {
+  transition: all;
+  transition: 4s;
+  position: fixed;
+}
+
+.intro,
+.bgNavbar {
+  background-color: transparent;
+  background-image: linear-gradient(110deg, #3568e0 0%, #f229879c 100%);
+}
+.bgULSmall {
+  background-image: linear-gradient(110deg, #2f67ea 0%, #f22987e3 100%);
+}
+
+.waves {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: absolute;
+  bottom: 0;
+}
+
+@media (max-width: 649px) {
+  .bgIntro {
+    background-position: left center;
+  }
+}
+
+/* ==== */
+.custom-file-upload {
+  display: inline-block;
+  padding: 6px 12px;
+  background-color: #337ab7;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.custom-file-upload input[type="file"] {
+  display: none;
+}
+
+.custom-file-upload span {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* You can style the label as you like */
+
+/* Example: Hover effect */
+.custom-file-upload:hover {
+  background-color: #23527c;
+}
+
+/* Example: Focus effect */
+.custom-file-upload:focus {
+  outline: none;
+  box-shadow: 0 0 5px rgba(51, 122, 183, 0.5);
+}
+
+
+
