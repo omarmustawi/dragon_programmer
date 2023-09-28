@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Table from "../dashboard/Table";
+import { token } from "../../utility";
 
 export default function AllCoursesControllPannel() {
   // TO STORE COURSES
@@ -9,9 +10,11 @@ export default function AllCoursesControllPannel() {
   // get courses from back
   async function getCourses() {
     try {
-      let res = await axios.get("http://127.0.0.1:8000/api/user/courses");
-      setCourses(res.data.data);
-      console.log(res.data.data);
+      let res = await axios.get(`http://127.0.0.1:8000/api/user/courses?token=${token}`)
+      .then((res) => {
+        setCourses(res.data.data);
+      });
+      console.log("res:", res);
     } catch (err) {
       console.error("Oops! There is an error: ", err);
     }

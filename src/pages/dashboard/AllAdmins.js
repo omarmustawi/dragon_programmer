@@ -6,14 +6,13 @@ import { currentUserId, token } from "../../utility";
 export default function AllAdmins() {
   // TO STORE ADMINS
   const [admins, setAdmins] = useState([]);
-  console.log("admins", admins);
 
-  // TO GET ADMINS   ////////////////////////////////////////////////////// HERE I HAVE ERROR I WILL RETURN LATER
-  const  getAdmins = async  () => {
+  // TO GET ADMINS  
+  const getAdmins = async () => {
     try {
       await axios
         .get(`http://127.0.0.1:8000/api/admin/admins?token=${token}`)
-        .then((res) => console.log("resAdmin: ", res));
+        .then((res) => setAdmins(res.data.data));
     } catch (err) {
       console.error("Oops! there is an error: ", err);
     }
@@ -24,12 +23,10 @@ export default function AllAdmins() {
 
   // DELETE USER
   function handleDelete(id) {
-    console.log("id: ", id);
     axios
       .delete(
         `http://127.0.0.1:8000/api/admin/user/delete/${id}?token=${token}`
       )
-      .then((res) => console.log("res: ", res))
       .then((res) => setAdmins((prev) => prev.filter((item) => item.id !== id)))
       .catch((err) => console.error("Oops! there is an error: ", err));
   }

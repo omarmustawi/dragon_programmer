@@ -6,15 +6,18 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter as Router } from "react-router-dom";
 import { MenuContextProvider } from "./components/Context/MenuContext";
 import WindowContext from "./components/Context/WindowContext";
+import { AllCommentsProvider } from "./components/Context/CommentsContext";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <WindowContext>
     <MenuContextProvider>
-      <React.StrictMode>
-        <Router>
-          <App />
-        </Router>
-      </React.StrictMode>
+      <AllCommentsProvider>
+        <React.StrictMode>
+          <Router>
+            <App />
+          </Router>
+        </React.StrictMode>
+      </AllCommentsProvider>
     </MenuContextProvider>
   </WindowContext>
 );

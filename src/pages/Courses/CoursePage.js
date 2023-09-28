@@ -20,20 +20,23 @@ export default function CoursePage() {
   const [teacherInfo, setTeacherInfo] = useState("");
   // TO SRTORE COMMENTS
   const [comments, setComments] = useState([]);
-  // console.log("comments.length : ", comments.length);
   // TO SELECT CURRENT API  EITHER USAUL COMMENT OR REPLAY ON COMMENT I will store comment_id if it replayed comment else null
   const [isItReplay, setIsItReplay] = useState(null);
   // reGetComment
   const [reGetComment, setReGetComment] = useState(false);
-  console.log("comments: " , comments );
 
   const inputRef = useRef(null);
 
-  const focusInput = () => {
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  };
+  // const focusInput = () => {
+  //   if (inputRef.current) {
+  //     inputRef.current.focus();
+  //   }
+  // };
+
+
+
+
+
   // ============== HANDLE DELETE COMMENTS ======================
   // DELETE COMMENT
   async function deleteComment(id) {
@@ -47,12 +50,14 @@ export default function CoursePage() {
           setComments((prev) => prev.filter((item) => item.id !== id));
           setReGetComment(!reGetComment)
         });
-
     } catch (err) {
       console.error("Oops! There is an error:", err);
     }
   }
   
+
+
+
 
   // ============= START HANDLE SUBMIT COMMENT ==============
   // TO STORE THE CURRENT COMMENT BEFORE SEND IT TO
@@ -60,7 +65,6 @@ export default function CoursePage() {
 
   // handle submit comment
   async function submitComment(id) {
-    console.log("In submit and id comment is: ", id);
     console.log(
       "isItReplay: ",
       typeof isItReplay,
@@ -110,6 +114,12 @@ export default function CoursePage() {
   }
   // ============= END HANDLE SUBMIT COMMENT ==============
 
+
+
+
+
+
+
   // ==================== START GET DATA FROM DATABASE =========
   useEffect(() => {
     try {
@@ -117,13 +127,13 @@ export default function CoursePage() {
         .get(`http://127.0.0.1:8000/api/user/course/info/${id_course}`)
         .then((res) => {
           console.log("rescourse: ", res);
-          setVideos(res.data.data.video);
-          setCourseInfo(res.data.data.course);
-          setTeacherInfo(res.data.data.teacher);
-          if (Array.isArray(res.data.data.comments)) {
-            // Check if comments is an array
-            setComments(res.data.data.comments);
-          }
+          // setVideos(res.data.data.video);
+          // setCourseInfo(res.data.data.course);
+          // setTeacherInfo(res.data.data.teacher);
+          // if (Array.isArray(res.data.data.comments)) {
+          //   // Check if comments is an array
+          //   setComments(res.data.data.comments);
+          // }
         });
     } catch (err) {
       console.error("Oops! There is an error:", err);
@@ -263,7 +273,7 @@ export default function CoursePage() {
             name={item.user.name}
             text={item.content}
             replies={item.replies}
-            focusInput={focusInput}
+            // focusInput={focusInput}
             setIsItReplay={setIsItReplay}
             deleteComment={deleteComment}
           />

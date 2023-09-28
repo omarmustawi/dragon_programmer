@@ -45,7 +45,7 @@
     @apply fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-3xl font-semibold text-pink-500;
   }
   .notice {
-    @apply w-full cursor-pointer p-3 px-6 border-b-2 border-gray-300 rounded-t-lg my-1 text-slate-600 text-lg;
+    @apply w-full cursor-pointer p-3 px-6 border-b-2 border-gray-300 rounded-t-lg my-1 text-slate-600 text-base font-thin;
   }
   .inputDas {
     @apply block m-auto w-1/2 my-6 py-2 px-4 rounded-3xl placeholder:text-slate-800 border-zinc-400 border-2 focus:border-violet-500;

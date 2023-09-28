@@ -1,30 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { token } from "../../utility";
-import { Link } from "react-router-dom";
-
-const Notice = (props) =>
-  props.mesage.length ? (
-    props.mesage.map((item) => (
-      <Link
-        to={`/${item.course_id}`}
-        key={item.id}
-        className={"notice bg-blue-100 font-bold"}
-      >
-        <h1>
-          {" "}
-          One Video is added to course {item.course_name} By {item.teacher_info}{" "}
-        </h1>
-      </Link>
-    ))
-  ) : (
-    <h1 className="text-lg mb-3 text-center text-red-600 font-bold"> {`There is not any ${props.kind} notification ...!`} </h1>
-  );
+import { Notice, token } from "../../utility";
 
 export default function NoticeUser() {
   //  FOR STORE NOTEFICATIONS
   const [read, setRead] = useState([]);
   const [unRead, setUnRead] = useState([]);
+
+  console.log("read: " , read );
+  console.log("unread: " , unRead );
 
   async function notices() {
     try {
@@ -33,6 +17,7 @@ export default function NoticeUser() {
         .then((res) => {
           console.log("res: ", res);
           setRead(res.data.data.readed_notifications);
+          // if( res.data.data.new_registration)
           setUnRead(res.data.data.unread_notifications);
         });
       console.log("read:", read);

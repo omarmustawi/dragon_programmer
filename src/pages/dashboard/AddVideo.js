@@ -2,11 +2,15 @@ import axios from "axios";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { token } from "../../utility";
+import Alert from "../../components/Alert/Alert";
 
 export default function AddVideo() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [video, setVideo] = useState();
+
+  // TO STORE MESSAGE
+  const [message, setMessage] = useState("");
 
   //   GET course_id WHICH I CHOOSE IT
   const location = useLocation();
@@ -25,8 +29,8 @@ export default function AddVideo() {
         `http://127.0.0.1:8000/api/admin/course/add-video?token=${token}`,
         form
       );
-      console.log("res: " , res );
-      //   setMessage(res.data.message);
+      console.log("resVideo: ", res);
+      setMessage(res.data.message);
     } catch (err) {
       console.error("Oops! There is an error: ", err);
     }
@@ -40,6 +44,7 @@ export default function AddVideo() {
       </h1>
       <form onSubmit={handleSubmit} className=" w-full mx-auto relative ">
         <input
+          required
           className="inputDas  "
           type="text"
           placeholder="Title"
@@ -48,6 +53,7 @@ export default function AddVideo() {
           onChange={(e) => setTitle(e.target.value)}
         />
         <textarea
+          required
           className="bg-transparent mx-auto   focus:outline-none h-20 inputDas"
           type="text"
           placeholder="Description"
@@ -87,6 +93,7 @@ export default function AddVideo() {
           </button>
         </div>
       </form>
+      {message && <Alert message={message} />}
     </>
   );
 }

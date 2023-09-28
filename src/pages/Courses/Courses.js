@@ -3,6 +3,7 @@ import Course from "../../components/Course";
 import { BiSearchAlt } from "react-icons/bi";
 import axios from "axios";
 import SlidesCourses from "../../components/SlidesCourses";
+import { token } from "../../utility";
 
 // START COMPONENT
 export default function Courses() {
@@ -18,9 +19,12 @@ export default function Courses() {
   // get courses from back
   async function getCourses() {
     try {
-      let res = await axios.get(`http://127.0.0.1:8000/api/user/courses`);
-      console.log("res:", res.data.data);
-      setCourses(res.data.data)
+      let res = await axios
+        .get(`http://127.0.0.1:8000/api/user/courses?token=${token}`)
+        .then((res) => {
+          setCourses(res.data.data);
+          console.log("res:", res);
+        });
     } catch (err) {
       console.error("Oops! There is an error: ", err);
     }
@@ -36,6 +40,8 @@ export default function Courses() {
       .get(`http://127.0.0.1:8000/api/user/search-uc?search=${searchObject}`)
       .then((res) => setSearchedCourses(res.data.data.result));
   }
+  // console.log("searchedCourses.", typeof searchedCourses);
+  // console.log("courses.", typeof courses);
 
   return (
     <section>
@@ -71,20 +77,28 @@ export default function Courses() {
               {" "}
               The result of search:
             </h1>
-            <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
-              {searchedCourses.map((course) => (
-                <Course
-                  id={course.id}
-                  imgIntro={course.image}
-                  title={course.title}
-                  level={course.level}
-                  description={course.description}
-                  price={course.price}
-                  term={course.hours}
-                  setWidth={"w-10/12 sm:w-4/6 md:w-full xl:w-3/10 "}
-                />
-              ))}
-            </section>
+            {searchedCourses.length !== 0 ? (
+              <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+                {searchedCourses.map((course) => (
+                  <Course
+                    id={course.id}
+                    imgIntro={course.image}
+                    title={course.title}
+                    level={course.level}
+                    description={course.description}
+                    price={course.price}
+                    term={course.hours}
+                    setWidth={"w-10/12 sm:w-4/6 md:w-full xl:w-3/10 "}
+                    subscribe={course.subscribe}
+                  />
+                ))}
+              </section>
+            ) : (
+              <h1 className="text-center text-red-400 font-bold">
+                {" "}
+                There is no any course yet{" "}
+              </h1>
+            )}
           </div>
         </div>
       )}
@@ -93,11 +107,20 @@ export default function Courses() {
       {/*  =================  start  All Courses  ================= */}
       <div className=" m-5%">
         <div>
-          <h1 className="text-center lg:text-4xl text-xl font-bold text-violet-600 mb-6">
-            Start Your Trip With Our
-          </h1>
+          {courses.length !== 0 ? (
+            <h1 className="text-center lg:text-4xl text-xl font-bold text-violet-600 mb-6">
+              Start Your Trip With Our
+            </h1>
+          ) : (
+            <h1 className="capitalize text-xl text-center text-red-400 font-bold">
+              {" "}
+              There is no any course yet{" "}
+            </h1>
+          )}
 
-          <section> <SlidesCourses courses={courses} /> </section>
+          <section>
+            <SlidesCourses courses={courses} />
+          </section>
         </div>
       </div>
       {/*  =================  start  All Courses  ================= */}

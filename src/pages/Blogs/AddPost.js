@@ -1,36 +1,35 @@
 import { useState } from "react";
-import { name, token } from "../../utility";
+import { token } from "../../utility";
 import axios from "axios";
+import Alert from "../../components/Alert/Alert";
 
 export default function AddPost() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
-  console.log("title: ", title);
-  console.log("body: ", body);
-  console.log("name: ", name);
+  // TO STORE MESSAGE
+  const [message, setMessage] = useState("");
 
-  async function handleSubmit() {
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const form = new FormData();
+    form.append("title", title);
+    form.append("body", body);
     try {
-      let res = await axios.post(
-        `http://127.0.0.1:8000/api/admin/post`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` }, // Corrected "Authentication" to "Authorization"
-        },
-        {
-          title: title,
-          body: body,
-        }
-      );
-      console.log("result:" , res );
+      console.log("in");
+      let res = await axios
+        .post(`http://127.0.0.1:8000/api/admin/post?token=${token}`, form)
+        .then((res) => {
+          console.log("result:", res);
+          setMessage(res.data.message);
+        });
     } catch (err) {
       console.error("Oops! There is an error: ", err);
     }
   }
-
+  // How to learn english?
   return (
-    <form className="h-full">
+    <form onSubmit={handleSubmit} className="h-full">
       <input
         type="text"
         value={title}
@@ -46,12 +45,8 @@ export default function AddPost() {
         name="body"
         onChange={(e) => setBody(e.target.value)}
       />
-      <button
-        className="btnDash ml-50% -translate-x-1/2"
-        onClick={handleSubmit}
-      >
-        Save
-      </button>
+      <button className="btnDash ml-50% -translate-x-1/2">Save</button>
+      {message && <Alert message="message" />}
     </form>
   );
 }

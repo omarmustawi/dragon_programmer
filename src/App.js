@@ -27,6 +27,10 @@ import NewRegistration from "./pages/dashboard/NewRegistration";
 import EditCourse from "./pages/Courses/EditCourse";
 import AddVideo from "./pages/dashboard/AddVideo";
 import AddPost from "./pages/Blogs/AddPost";
+import {
+  AllComments,
+  AllCommentsProvider,
+} from "./components/Context/CommentsContext";
 
 export default function App() {
   const [scrollY, setScrollY] = useState(window.scrollY);
@@ -73,9 +77,7 @@ export default function App() {
         <Route path="/courses" element={<Courses />} />
         <Route path="/courses/:id" element={<CoursePage />} />{" "}
         {/* HERR WHEN I AM IN COURSES LIST PAGE  AND THEN I MOVE TO A COURSE PAGE */}
-        <Route path="/blogs" element={<Blogs />}>
-          <Route path="post" element={<Post />} />
-        </Route>
+        <Route path="/blogs" element={<Blogs />} />
         <Route path="/err404" element={<Err404 />} />
         <Route path="/noticeUser" element={<NoticeUser />} />
       </Routes>

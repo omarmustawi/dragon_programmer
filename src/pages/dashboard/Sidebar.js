@@ -25,7 +25,7 @@ export default function Sidebar() {
         }}
       ></div>
       <div
-        className="bg-slate-400 h-screen top-0 p-3 pt-3 w-48 shadow-2xl"
+        className="bg-slate-400 h-screen top-0 p-3 pt-3 w-56 shadow-2xl"
         style={{
         //   left: windowSize < "768" ? (isOpen ? 0 : "-100%") : 0,
         //   width:
@@ -40,7 +40,7 @@ export default function Sidebar() {
       >
         {links.map((item, key) => (
           <NavLink className={" text-violet-600"} key={key} to={item.path}>
-            <span className="w-fit font-bold flex gap-2 my-3">
+            <span className="w-fit font-bold flex gap-2 my-3 items-center">
               {item.name}
               {item.icon}
             </span>

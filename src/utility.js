@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Cookies from "universal-cookie";
 import Alert from "./components/Alert/Alert";
+import { Link } from "react-router-dom";
 
 // ========= Cookie =========
 const cookie = new Cookies();
@@ -19,8 +20,7 @@ const Forma = (props) => {
   const [hours, setHours] = useState("");
   const [price, setPrice] = useState("");
 
-  
-  const id_course =  props.id_edit_course[0] || false;
+  const id_course = props.id_edit_course[0] || false;
   console.log("id:", id_course);
 
   // IF I WANT TO EDIT INFO OF A COURSE I HAVE TO GET THE INFO ABOUT THIS COURSE AND PUT THEM IN INPUTS
@@ -47,25 +47,8 @@ const Forma = (props) => {
 
   // ////////////the end of GET THE OLD INFO ABOUT THE COUSE //////////////////
 
-  // Handle Message as Alert
+  // // Handle Message as Alert
   const [message, setMessage] = useState("");
-
-  // HOW TO MAKE Alert display for 10 sec
-  const [alert, setAlert] = useState(false);
-
-  useEffect(() => {
-    // Set alert to true to display it
-    setAlert(true);
-
-    // After 10 seconds, hide the alert
-    const timeoutId = setTimeout(() => {
-      setAlert(false);
-    }, 5000); // 10000 milliseconds = 10 seconds
-
-    // Cleanup the timeout when the component unmounts
-    return () => clearTimeout(timeoutId);
-  }, [message]);
-  // The  Handle Message as Alert
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -165,9 +148,41 @@ const Forma = (props) => {
           </button>
         </div>
       </form>
-      {message !== "" && alert && <Alert message={message} />}
+      {message !== "" && <Alert message={message}  />}
     </>
   );
 };
 
-export { token, currentUserId, name, email, Forma };
+// ================= Notice Component ====================
+function Notice(props) {
+  return props.mesage.length ? (
+    props.mesage.map((item) => (
+      <div className="notice bg-blue-100 font-bold">
+        <Link to={`/courses/${item.course_id}`} key={item.id}>
+          <h1>
+            {" "}
+            One Video is added to course{" "}
+            <span className="font-semibold text-xl italic">
+              "{item.course_name}"
+            </span>{" "}
+            {"  "} by{" "}
+            <span className="font-semibold text-xl italic">
+              {" "}
+              "{item.teacher_info.name}"{" "}
+            </span>
+            <br />
+            Title: {item.title}
+            <br />
+            Description: {item.description}
+          </h1>
+        </Link>
+      </div>
+    ))
+  ) : (
+    <h1 className="text-lg mb-3 text-center text-red-600 font-bold">
+      {" "}
+      {`There is not any ${props.kind} notification ...!`}{" "}
+    </h1>
+  );
+}
+export { token, currentUserId, name, email, Forma, Notice };

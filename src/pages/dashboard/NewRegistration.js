@@ -2,6 +2,7 @@ import axios from "axios";
 import Table from "./Table";
 import { useEffect, useState } from "react";
 import { token } from "../../utility";
+import Alert from "../../components/Alert/Alert";
 
 export default function NewRegistration() {
   // TO STORE NEW REGISTRATION
@@ -16,6 +17,9 @@ export default function NewRegistration() {
       });
     // .then((res) => setNewRegistration(res.data.data));
   }, []);
+
+  // TO STORE MESSAGE FOR ALERT
+  const [message, setMessage] = useState("");
 
   const header = [
     {
@@ -43,10 +47,12 @@ export default function NewRegistration() {
 
   //   handle Varify function
   function handleVarify(id) {
-    console.log("the id user that i will varify: ", id);
     axios
       .post(`http://127.0.0.1:8000/api/admin/user/verify/${id}?token=${token}`)
-      .then((res) => console.log("res of varify: ", res))
+      .then((res) => {
+        console.log("res of varify: ", res);
+        setMessage(res.data.message);
+      })
       .then((res) =>
         setNewRegistration((prev) => prev.filter((item) => item.id !== id))
       );
@@ -66,9 +72,11 @@ export default function NewRegistration() {
       ) : (
         <h1 className="text-xl text-red-400 text-center my-6 font-bold flex justify-center items-center gap-4">
           {" "}
-          Oops! There Is No Any New Registration <span className="text-4xl "> 😥 </span>
+          Oops! There Is No Any New Registration{" "}
+          <span className="text-4xl "> 😥 </span>
         </h1>
       )}
+      <Alert message={message} />
     </section>
   );
 }
