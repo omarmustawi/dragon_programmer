@@ -1,13 +1,9 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Cookies from "universal-cookie";
 import Table from "../dashboard/Table";
+import { token, currentUserId } from "../../utility";
 
-const cookie = new Cookies();
-const token = cookie.get("token");
-export const currentUserId = cookie.get("id");
 export default function Users() {
-
   // STORE ALL USERS IN STATE
   const [users, setUsers] = useState([]);
   useEffect(() => {
@@ -55,5 +51,3 @@ export default function Users() {
     />
   );
 }
-
-

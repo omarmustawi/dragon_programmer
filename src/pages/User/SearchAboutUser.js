@@ -61,7 +61,7 @@ export default function SearchAboutUser() {
   // THE useEffect HOOK IS VERY USEFULL ): 👆
   return (
     <section className="mx-auto w-full flex-col flex align-middle">
-      <h1 className="text-center">SearchAboutUser </h1>
+      <h1 className="text-center text-xl font-semibold text-dashbtn">SearchAboutUser </h1>
       <input
         name="search"
         value={search}

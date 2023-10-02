@@ -3,8 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import logo from "../../images/loder.png.webp";
 import axios from "axios";
 import Cookies from "universal-cookie";
-
-
+import Alert from "../../components/Alert/Alert";
 
 export default function Login() {
   // DATA USER FOR LOGIN
@@ -17,18 +16,15 @@ export default function Login() {
   const navigate = useNavigate();
   // COOKIE
   const cookie = new Cookies();
-
-
   // SUBMIT FORM LOGIN
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      let res = await axios.post("http://127.0.0.1:8000/api/user/login", {
-        email: user.email[0],
-        password: user.password[0],
-      });
-
-      console.log("res: ", res);
+      let res = await axios
+        .post("http://127.0.0.1:8000/api/user/login", {
+          email: user.email[0],
+          password: user.password[0],
+        })
 
       // STORE COOKIE
       const token = res.data.data.token;
@@ -41,9 +37,9 @@ export default function Login() {
       cookie.set("name", name);
       cookie.set("email", email);
       cookie.set("role", role);
-      
+
       // GO TO HOME
-      navigate('/')
+      navigate("/");
 
       // FOR token CHANGE
       window.location.reload();
@@ -52,7 +48,6 @@ export default function Login() {
     }
   }
 
-  
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: [e.target.value] });
   };

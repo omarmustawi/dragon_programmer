@@ -2,25 +2,34 @@ import axios from "axios";
 import { PiArrowBendDownRightBold } from "react-icons/pi";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { AllComments } from "./Context/CommentsContext";
-import { useContext, useState } from "react";
-import { token } from "../utility";
+import { useContext } from "react";
+import { token, currentUserId } from "../utility";
 
 // http://127.0.0.1:8000/api/user/delete/23
 export default function Comment(props) {
   const contextComment = useContext(AllComments);
-  // is reply we want to delete?
-  // const [is_reply, set_is_reply] = useState(false);
 
   // ======= start deleteComment ===========
   async function deleteComment(id) {
-    console.log("props.kind: ", props.kind);
-    if (props.kind === "comment") {
-      // it means we want to delete a normal comment
-      try {
+    // =========
+
+    console.log(
+      "id: ",
+      id,
+      "props.kind: ",
+      props.kind,
+      "props.it_is_for: ",
+      props.it_is_for
+      , props.kind === "comment" && props.it_is_for === "post"
+    );
+    // ======================
+    try {
+      if (props.kind === "comment" && props.it_is_for === "post") {
+        // Deleting a normal comment on a post
         await axios
           .post(
             `http://127.0.0.1:8000/api/user/delete-comment?token=${token}`,
-            { post_id: id } // it has to be comment_id but this is mistake from backend
+            { comment_id: id } // Correct this if it should be "comment_id"
           )
           .then((res) => {
             console.log("delete comment res: ", res);
@@ -28,34 +37,53 @@ export default function Comment(props) {
               prev.filter((item) => item.comment_id !== id)
             );
           });
-      } catch (err) {
-        console.error("Oops! There is an error:", err);
-      }
-    } else {
-      // we wanna delete a replied comment
-      try {
+      } else if (props.kind === "comment" && props.it_is_for === "course") {
+        // Deleting a normal comment on a course
+        await axios
+          .delete(
+            `http://127.0.0.1:8000/api/user/course/${id}/destroy-comment?token=${token}`
+          )
+          .then((res) => {
+            console.log("delete comment res: ", res);
+            contextComment.setComments((prev) =>
+              prev.filter((item) => item.comment_id !== id)
+            );
+          });
+      } else {
+        // Deleting a replied comment
         await axios
           .post(`http://127.0.0.1:8000/api/user/delete/${id}?token=${token}`)
           .then((res) => {
             console.log("delete reply res: ", res);
+            console.log("props.comment_id: ", props.comment_id);
             contextComment.setComments((comments) =>
               comments.map((comment) => {
-                if (comment.comment_id === contextComment.id_reply) {
-                  // Filter out the reply from the replies array
-                  comment.replies = comment.replies.filter(
-                    (item) => item.id !== id
+                if (comment.comment_id === props.comment_id) {
+                  console.log(
+                    "props.comment_id: ",
+                    props.comment_id,
+                    " comment.comment_id: ",
+                    comment.comment_id
                   );
+                  // Check if the reply exists before filtering
+                  if (comment.replies) {
+                    comment.replies = comment.replies.filter(
+                      (item) => item.replay.id !== id
+                    );
+                    console.log("replies: ", comment);
+                  }
                 }
                 return comment;
               })
             );
           });
-        contextComment.set_id_reply(""); // return into natural position
-      } catch (err) {
-        console.error("Oops! There is an error:", err);
+        contextComment.set_id_reply(""); // Return to the natural position
       }
+    } catch (err) {
+      console.error("Oops! There is an error:", err);
     }
   }
+
   // ======= end deleteComment ===========
 
   return (
@@ -94,22 +122,34 @@ export default function Comment(props) {
             className="text-gray-500 absolute left-7 bottom-1"
           />
         </button>
-        <RiDeleteBin5Fill
-          onClick={() => deleteComment(props.comment_id)}
-          size={20}
-          className="text-red-500 absolute left-24 bottom-1 cursor-pointer"
-        />
+        {props.id_user === currentUserId ? (
+          <RiDeleteBin5Fill
+            onClick={() => {
+              props.kind === "comment"
+                ? deleteComment(props.comment_id)
+                : deleteComment(props.reply_id);
+            }}
+            size={20}
+            className="text-red-500 absolute left-24 bottom-1 cursor-pointer"
+          />
+        ) : (
+          ""
+        )}
       </div>
       <div className="translate-x-7">
         {props.replies?.map((item) => (
           <>
             <Comment
               key={item.replay.id}
-              comment_id={item.replay.id}
+              reply_id={item.replay.id}
+              id_user={item.user.id}
+              comment_id={props.comment_id}
               role={item.user.role}
               name={item.user.name}
               text={item.replay.content}
               kind={"reply"}
+              it_is_for={props.it_is_for}
+
               // replies={item.replay}
               // note="this is replayed 😂"
               // deleteComment={props.deleteComment}

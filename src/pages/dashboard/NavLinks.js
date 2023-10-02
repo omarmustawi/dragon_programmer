@@ -2,7 +2,7 @@ import { FaUsers } from "react-icons/fa";
 import { BiBell, BiHomeAlt } from "react-icons/bi";
 import { RiVideoAddFill } from "react-icons/ri";
 import { RxOpenInNewWindow } from "react-icons/rx";
-import { MdAdminPanelSettings, MdOutlinePlayLesson, MdOutlinePostAdd, MdPersonSearch } from "react-icons/md";
+import { MdAdminPanelSettings, MdEventAvailable, MdOutlinePlayLesson, MdOutlinePostAdd, MdPersonSearch } from "react-icons/md";
 
 export const links = [
   {
@@ -44,6 +44,11 @@ export const links = [
     name: "Add A Post",
     path: "addPost",
     icon: <MdOutlinePostAdd size={30} />,
+  },
+  {
+    name: "Events",
+    path: "events",
+    icon: <MdEventAvailable size={30} />,
   },
   {
     name: "Home",

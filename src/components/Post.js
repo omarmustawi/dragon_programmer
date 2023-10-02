@@ -3,7 +3,6 @@ import { BiSolidCommentEdit } from "react-icons/bi";
 import Comment from "./Comment";
 import axios from "axios";
 import { AllComments } from "./Context/CommentsContext";
-import { token } from "../utility";
 
 export default function Post(props) {
   // to read whole post
@@ -76,13 +75,14 @@ export default function Post(props) {
           {contextComment.comments.map((item) => (
             <Comment
               key={item.comment_id}
+              id_user={item.user.id}
               comment_id={item.comment_id}
               name={item.user.name}
               role={item.user.role}
               text={item.content}
               replies={item.replies}
               kind={"comment"}
-              // deleteComment={deleteComment}
+              it_is_for={"post"}
             />
           ))}
         </div>

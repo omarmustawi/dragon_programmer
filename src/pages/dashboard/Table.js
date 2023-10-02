@@ -95,7 +95,7 @@ export default function Table({
           <th className="px-6 py-3 ">Action</th>
         </tr>
       </thead>
-      <tbody>{bodyShow}</tbody>
+      <tbody className="rounded-xl">{bodyShow}</tbody>
     </table>
   );
 }

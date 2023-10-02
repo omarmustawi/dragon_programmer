@@ -18,7 +18,7 @@
     @apply bg-fuchsia-500 shadow-lg shadow-fuchsia-300;
   }
   .navbar {
-    @apply w-full absolute flex justify-between p-4 text-white text-lg z-10;
+    @apply w-full absolute flex justify-between p-4 text-white font-semibold text-lg z-10;
   }
   .navbarForSmallSize {
     @apply text-white text-lg z-30 w-full h-16 fixed;
@@ -60,6 +60,58 @@
     @apply bg-gray-600 my-1 rounded-xl p-2 w-10/12 m-auto text-white flex justify-between items-center cursor-pointer focus:bg-red-500;
   }
 }
+/*============= start remove style scroll bar ============== */
+/* Hide scrollbar on body */
+body {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+body::-webkit-scrollbar {
+  width: 0em; /* Width of the scrollbar */
+}
+
+body::-webkit-scrollbar-thumb {
+  background: transparent; /* Color of the thumb */
+}
+/* ============== end remove style scroll bar ============= */
+
+
+/*========= start responsive table for screen small========== */
+/* Apply responsive styling for small screens */
+@media (max-width: 767px) {
+  /* Hide table headers on small screens */
+  table thead {
+    display: none;
+  }
+
+  table tbody {
+    display: flex;
+    flex-wrap: wrap;
+    /* background-color: #fff; */
+  }
+  /* Convert table cells into block elements with a border and padding */
+  table tbody tr {
+    display: block;
+    width: 50%;
+    border: 3px solid #ddd; /* Optional: Add borders for cell separation */
+    /* margin-bottom: 10px; Optional: Add spacing between rows */
+  }
+
+  table tbody td {
+    display: block;
+    text-align: left; /* Adjust text alignment if needed */
+    border-bottom: 1px solid #ddd; /* Optional: Add borders for cell separation */
+    padding: 5px; /* Adjust cell padding as needed */
+  }
+}
+@media (max-width: 550px) {
+  table tbody tr {
+  width: 100%;  
+  }
+
+}
+/* ========== end responsive table for screen small ============ */
 
 .loader {
   animation-duration: 2s;
@@ -75,8 +127,9 @@ body {
   overflow-x: hidden;
 }
 .active {
-  color: rgb(167, 4, 192);
-  font-weight: bolder;
+  color: #d2d2d2;
+  font-weight: 100;
+  /* transform: scale(2px); */
 }
 
 .bg {
@@ -91,6 +144,17 @@ body {
   bottom: 0;
   right: 0;
   left: 0;
+}
+@media (min-width: 1200px) and (max-width: 1300px) {
+  .bg {
+    background-position: 60%;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 1199px) {
+  .bg {
+    background-position: 40%;
+  }
 }
 
 .bgIntro {
@@ -162,6 +226,3 @@ body {
   outline: none;
   box-shadow: 0 0 5px rgba(51, 122, 183, 0.5);
 }
-
-
-

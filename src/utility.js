@@ -10,6 +10,7 @@ const token = cookie.get("token");
 const currentUserId = cookie.get("id");
 const name = cookie.get("name");
 const email = cookie.get("email");
+const role = cookie.get("role");
 
 //======== Form for insert Course  ========
 const Forma = (props) => {
@@ -21,7 +22,6 @@ const Forma = (props) => {
   const [price, setPrice] = useState("");
 
   const id_course = props.id_edit_course[0] || false;
-  console.log("id:", id_course);
 
   // IF I WANT TO EDIT INFO OF A COURSE I HAVE TO GET THE INFO ABOUT THIS COURSE AND PUT THEM IN INPUTS
   // GET THE OLD INFO ABOUT THE COUSE
@@ -29,15 +29,18 @@ const Forma = (props) => {
     if (props.id_edit_course) {
       try {
         axios
-          .get(`http://127.0.0.1:8000/api/user/course/info/1`)
+          .get(
+            `http://127.0.0.1:8000/api/user/course/info/${id_course}?token=${token}`
+          )
           .then((res) => {
-            // console.log("response: ", res);
+            console.log("response: ", res);
             setTitle(res.data.data.course.title);
             setDescription(res.data.data.course.description);
             setLevel(res.data.data.course.level);
             setHours(res.data.data.course.hours);
             setPrice(res.data.data.course.price);
             setPhoto(res.data.data.course.photo);
+            console.log("title: ", title, description); //
           });
       } catch (err) {
         console.error("Oops! There is an error: ", err);
@@ -148,7 +151,7 @@ const Forma = (props) => {
           </button>
         </div>
       </form>
-      {message !== "" && <Alert message={message}  />}
+      {message !== "" && <Alert message={message} />}
     </>
   );
 };
@@ -185,4 +188,4 @@ function Notice(props) {
     </h1>
   );
 }
-export { token, currentUserId, name, email, Forma, Notice };
+export { token, currentUserId, name, email, role , Forma, Notice };

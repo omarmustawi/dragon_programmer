@@ -5,8 +5,8 @@ import { useContext, useEffect, useState } from "react";
 import imgUser from "../../images/imgUser.webp";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { WindowSize } from "../Context/WindowContext";
-import Cookies from "universal-cookie";
 import Logout from "../Logout";
+import { token, role } from "../../utility";
 
 export default function Navbar() {
   const windowSizeWidth = useContext(WindowSize);
@@ -20,14 +20,10 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // GET TOKEN FROM COOKIE
-  const cookie = new Cookies();
-  const token = cookie.get("token");
-  const role = cookie.get("role");
 
   // FOR MAKE navbar DOESN'T APPEAR IN DASHBOARD
   const location = useLocation();
-  if ( !location.pathname.includes('controllPannel')) {
+  if (!location.pathname.includes("controllPannel")) {
     return (
       <>
         {windowSizeWidth.windowSize > 1024 ? (

@@ -11,16 +11,14 @@ export default function User() {
   const [joinedCourse, setJoinedCourse] = useState([]);
 
   console.log(
-    "createdCourses: ",
-    createdCourses,
-    " joinedCourse: ",
-    joinedCourse
+    "createdCourses in profile: ",
+    createdCourses[0],
   );
 
   useEffect(() => {
     axios
       .get(
-        `http://127.0.0.1:8000/api/user/info/${currentUserId}?token=${token}`
+        `http://127.0.0.1:8000/api/user/edit?token=${token}`
       )
       .then((res) => {
         console.log("res", res);

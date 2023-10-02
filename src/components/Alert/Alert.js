@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 
 export default function Alert(props) {
-
-
   // // HOW TO MAKE Alert display for 10 sec
   const [alert, setAlert] = useState(false);
+  console.log("alert", alert);
 
   useEffect(() => {
     // Set alert to true to display it

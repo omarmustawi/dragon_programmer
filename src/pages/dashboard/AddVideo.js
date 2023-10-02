@@ -11,6 +11,7 @@ export default function AddVideo() {
 
   // TO STORE MESSAGE
   const [message, setMessage] = useState("");
+  console.log("message: ", message);
 
   //   GET course_id WHICH I CHOOSE IT
   const location = useLocation();
@@ -25,12 +26,22 @@ export default function AddVideo() {
     form.append("course_id", course_id);
     form.append("video", video);
     try {
-      let res = await axios.post(
-        `http://127.0.0.1:8000/api/admin/course/add-video?token=${token}`,
-        form
-      );
-      console.log("resVideo: ", res);
-      setMessage(res.data.message);
+      await axios
+        .post(
+          `http://127.0.0.1:8000/api/admin/course/add-video?token=${token}`,
+          form
+        )
+        .then((res) => {
+          console.log("resVideo: ", res);
+          if (res.data.status === 201) setMessage(res.data.message);
+          else {
+            setMessage("the operation failed");
+            return;
+          }
+        });
+      setTitle("");
+      setDescription("");
+      setVideo("");
     } catch (err) {
       console.error("Oops! There is an error: ", err);
     }

@@ -1,10 +1,11 @@
 import Comment from "../../components/Comment";
 import { AiOutlineSend } from "react-icons/ai";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
 import { MdOutlineSlowMotionVideo } from "react-icons/md";
 import { token } from "../../utility";
+import { AllComments } from "../../components/Context/CommentsContext";
 
 export default function CoursePage() {
   // TO GET id_course
@@ -18,127 +19,99 @@ export default function CoursePage() {
   const [courseInfo, setCourseInfo] = useState("");
   // TO STORE TEARCHER INFO
   const [teacherInfo, setTeacherInfo] = useState("");
-  // TO SRTORE COMMENTS
-  const [comments, setComments] = useState([]);
-  // TO SELECT CURRENT API  EITHER USAUL COMMENT OR REPLAY ON COMMENT I will store comment_id if it replayed comment else null
-  const [isItReplay, setIsItReplay] = useState(null);
-  // reGetComment
-  const [reGetComment, setReGetComment] = useState(false);
+  // TO GET COMMENTS FROM Commentscontext
+  const all_comments = useContext(AllComments);
 
   const inputRef = useRef(null);
 
-  // const focusInput = () => {
-  //   if (inputRef.current) {
-  //     inputRef.current.focus();
-  //   }
-  // };
-
-
-
-
+  const focusInput = () => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
 
   // ============== HANDLE DELETE COMMENTS ======================
   // DELETE COMMENT
-  async function deleteComment(id) {
-    try {
-      await axios
-        .delete(
-          `http://127.0.0.1:8000/api/user/course/${id}/destroy-comment?token=${token}`
-        )
-        .then((res) => {
-          console.log("delete res: ", res.data.data);
-          setComments((prev) => prev.filter((item) => item.id !== id));
-          setReGetComment(!reGetComment)
-        });
-    } catch (err) {
-      console.error("Oops! There is an error:", err);
-    }
-  }
-  
-
-
-
+  // async function deleteComment(id) {
+  //   try {
+  //     await axios
+  //       .delete(
+  //         `http://127.0.0.1:8000/api/user/course/${id}/destroy-comment?token=${token}`
+  //       )
+  //       .then((res) => {
+  //         console.log("delete res: ", res.data.data);
+  //         setComments((prev) => prev.filter((item) => item.id !== id));
+  //         setReGetComment(!reGetComment)
+  //       });
+  //   } catch (err) {
+  //     console.error("Oops! There is an error:", err);
+  //   }
+  // }
 
   // ============= START HANDLE SUBMIT COMMENT ==============
   // TO STORE THE CURRENT COMMENT BEFORE SEND IT TO
   const [commentCurrent, setCommentCurrent] = useState("");
 
   // handle submit comment
-  async function submitComment(id) {
-    console.log(
-      "isItReplay: ",
-      typeof isItReplay,
-      typeof isItReplay === "number"
-    );
+  async function submitComment(e) {
+    e.preventDefault();
+    console.log("", all_comments.id_reply);
     try {
-      let res =
-        typeof isItReplay === "number"
-          ? await axios
-              .post(
-                `http://127.0.0.1:8000/api/user/course/replay-comment/${id}?token=${token}`,
-                { replay: commentCurrent }
-              )
-              .then((res) => {
-                console.log("ressReplay", res);
-                const newComment = res.data.data;
-                console.log("newComment: ", newComment);
-                console.log("comments: ", comments);
-                // setComments([...comments , ])
-                // comments[newComment.comment_id - 1].replay = [
-                //   ...comments[newComment.comment_id].replay,
-                //   newComment,
-                // ];
-                // console.log( " ll" , comments[parseInt( newComment.comment_id ) - 1]  , parseInt( newComment.comment_id )  );
-                setIsItReplay(null);
-                setCommentCurrent("");
-                setReGetComment(!reGetComment);
-              })
-          : await axios
-              .post(
-                `http://127.0.0.1:8000/api/user/course/${id_course}/insert-comment?token=${token}`,
-                { comment: commentCurrent }
-              )
-              .then((res) => {
-                console.log("commentCurrent", commentCurrent);
-                // Assuming the response contains the newly added comment
-                const newComment = res.data.data; // You should adapt this based on your API response structure
-                console.log("newComment: ", newComment);
-                // Update the comments state by adding the new comment
-                setComments([...comments, newComment]);
-                // Clear the input field after submission
-                setCommentCurrent("");
-              });
+      if (all_comments.id_reply !== "") {
+        // replay
+        console.log("reply");
+
+        const res = await axios.post(
+          `http://127.0.0.1:8000/api/user/course/replay-comment/${all_comments.id_reply}?token=${token}`,
+          { replay: commentCurrent }
+        );
+        console.log("ressReplay", res);
+        console.log("newComment: ", res.data.data);
+        setCommentCurrent("");
+      } else {
+        // comment
+        console.log("comment");
+        await axios
+          .post(
+            `http://127.0.0.1:8000/api/user/course/${id_course}/insert-comment?token=${token}`,
+            { comment: commentCurrent }
+          )
+          .then((res) => {
+            const newComment = res.data.data;
+            all_comments.setComments(newComment);
+            // console.log("all comments: ", all_comments.comments );
+            // setComments([...comments, newComment]);
+            setCommentCurrent("");
+          });
+      }
     } catch (err) {
       console.error("Oops! There is an error:", err);
     }
   }
   // ============= END HANDLE SUBMIT COMMENT ==============
 
-
-
-
-
-
-
   // ==================== START GET DATA FROM DATABASE =========
   useEffect(() => {
     try {
       axios
-        .get(`http://127.0.0.1:8000/api/user/course/info/${id_course}`)
+        .get(
+          `http://127.0.0.1:8000/api/user/course/info/${id_course}?token=${token}`
+        )
         .then((res) => {
-          console.log("rescourse: ", res);
-          // setVideos(res.data.data.video);
-          // setCourseInfo(res.data.data.course);
-          // setTeacherInfo(res.data.data.teacher);
-          // if (Array.isArray(res.data.data.comments)) {
-          //   // Check if comments is an array
-          //   setComments(res.data.data.comments);
-          // }
+          console.log("res course: ", res);
+          setVideos(res.data.data.video);
+          setCourseInfo(res.data.data.course);
+          setTeacherInfo(res.data.data.teacher);
+          if (Array.isArray(res.data.data.comments)) {
+            // Check if comments is an array
+            all_comments.setComments(res.data.data.comments);
+            console.log("all_comments111: ", all_comments.comments);
+          }
         });
     } catch (err) {
       console.error("Oops! There is an error:", err);
     }
-  }, [reGetComment]);
+  }, []);
   // ==================== END GET DATA FROM DATABASE =========
 
   // ========= START HANDLE PLAYLIST ==========
@@ -162,10 +135,10 @@ export default function CoursePage() {
     <section>
       {/* START HEADER OF COURSE */}
       <div>
-        <header className="intro lg:p-32 md:p-14 px-5 py-16">
-          <div className=" flex flex-wrap md:flex-nowrap justify-between gap-12">
+        <header className="intro  px-5 py-16 xl:px-14">
+          <div className=" flex flex-wrap lg:flex-nowrap  justify-between gap-12">
             <img
-              className="w-fit h-60 m-auto md:m-0"
+              className="w-full h-fit md:w-4/7 lg:w-1/2 m-auto md:m-0"
               src={courseInfo.image}
               alt="imgCourse"
             />
@@ -178,14 +151,14 @@ export default function CoursePage() {
               </span>
               <span className="text-blue-800 font-bold">
                 {" "}
-                Price: {courseInfo.price}
+                Price: {courseInfo.price} $
               </span>
               <span className="text-blue-800 font-bold">
                 Level: {courseInfo.level}
               </span>
             </div>
           </div>
-          <div>
+          <div className="mt-4">
             <p className="text-purple-900 font-bold">
               {" "}
               This Course is created by{" "}
@@ -210,7 +183,9 @@ export default function CoursePage() {
           <video ref={videoRef} controls className="w-full" />
           <div className="flex justify-around">
             <p className="font-bold"> {titleRef} </p>
-            <p className="font-bold"> {descriptionRef} </p>
+            <p className="font-bold">
+              {"  "} {descriptionRef}{" "}
+            </p>
           </div>
           <h2 className="text-center font-bold mt-10 text-xl">
             Video Playlist
@@ -256,7 +231,7 @@ export default function CoursePage() {
             type="text"
             placeholder="Put your questions here: ✨"
           />
-          <button type="submit" onClick={() => submitComment(isItReplay)}>
+          <button type="submit" onClick={submitComment}>
             <AiOutlineSend
               className="absolute top-0 right-0 hover:text-green-700"
               cursor={"pointer"}
@@ -265,17 +240,20 @@ export default function CoursePage() {
             />
           </button>
         </div>
-        {comments.map((item) => (
+        {all_comments.comments?.map((item) => (
           <Comment
             key={item.comment_id}
+            id_user={item.user.id}
             comment_id={item.comment_id}
-            role={item.user.role}
             name={item.user.name}
+            role={item.user.role}
             text={item.content}
             replies={item.replies}
-            // focusInput={focusInput}
-            setIsItReplay={setIsItReplay}
-            deleteComment={deleteComment}
+            focusInput={focusInput}
+            kind={"comment"}
+            it_is_for={"course"}
+            // setIsItReplay={setIsItReplay}
+            // deleteComment={deleteComment}
           />
         ))}
       </div>

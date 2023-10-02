@@ -31,8 +31,6 @@ export default function Blogs() {
   // current comment
   const [comment, setComment] = useState("");
   const [post_id, setPost_id] = useState("");
-  // if current cumment is replay:
-  // const [is_replay, set_is_replay] = useState(false);
 
   const handleChange = (e) => {
     setComment(e.target.value);
@@ -52,6 +50,7 @@ export default function Blogs() {
 
   // ============ start handle submit comment =============
   async function handleSubmit(e) {
+    console.log("id_replay: " , contextComment.id_reply );
     e.preventDefault();
     if (contextComment.id_reply === "") {
       try {
@@ -102,9 +101,8 @@ export default function Blogs() {
                 return comment;
               })
             );
-            contextComment.set_id_reply('')
+            contextComment.set_id_reply("");
           });
-
       } catch (err) {
         console.error("Oops! There is an error: ", err);
       }
@@ -116,47 +114,53 @@ export default function Blogs() {
     <>
       {/* <Loading /> */}
 
-      <section className=" bg-grayColor min-h-minHeight">
+      <section className=" bg-grayColor min-h-minHeight relative">
         <article className="intro lg:h-72 flex justify-center items-center h-48">
           <h1 className="lg:text-5xl text-3xl text-white font-semibold">
             Blogs{" "}
           </h1>
         </article>
-        <div className="lg:py-20 lg:px-20 py-5 px-5">
-          {posts.map((post) => (
-            <Post
-              key={post.id}
-              post_id={post.id}
-              name={post.name}
-              title={post.title}
-              paragraph={post.body}
-              created_at={post.created_at}
-              setPost_id={setPost_id}
-            />
-          ))}
-
-          <form onSubmit={handleSubmit} className="sticky bottom-2">
-            <div className="flex bg-white p-3 border-2 border-slate-300  rounded-2xl">
-              <textarea
-                placeholder="Leave a comment ✨"
-                className=" w-full  outline-none pr-14 "
-                name="comment"
-                value={comment}
-                onChange={handleChange}
-                rows="1"
-                ref={(textarea) => textarea && updateTextareaRows(textarea)}
+        {token ? (
+          <div className="lg:py-20 lg:px-20 py-5 px-5">
+            {posts.map((post) => (
+              <Post
+                key={post.id}
+                post_id={post.id}
+                name={post.name}
+                title={post.title}
+                paragraph={post.body}
+                created_at={post.created_at}
+                setPost_id={setPost_id}
               />
-              <button type="submit" className="relative">
-                <AiOutlineSend
-                  className="absolute -top-0 right-3 hover:text-green-700"
-                  cursor={"pointer"}
-                  size={30}
-                  display={"inline"}
+            ))}
+
+            <form onSubmit={handleSubmit} className="sticky bottom-2">
+              <div className="flex bg-white p-3 border-2 border-slate-300  rounded-2xl">
+                <textarea
+                  placeholder="Leave a comment ✨"
+                  className=" w-full  outline-none pr-14 "
+                  name="comment"
+                  value={comment}
+                  onChange={handleChange}
+                  rows="1"
+                  ref={(textarea) => textarea && updateTextareaRows(textarea)}
                 />
-              </button>
-            </div>
-          </form>
-        </div>
+                <button type="submit" className="relative">
+                  <AiOutlineSend
+                    className="absolute -top-0 right-3 hover:text-green-700"
+                    cursor={"pointer"}
+                    size={30}
+                    display={"inline"}
+                  />
+                </button>
+              </div>
+            </form>
+          </div>
+        ) : (
+          <h1 className="text-center text-xl font-semibold text-red-400 top-1/2  absolute w-full ">
+            <span>You have to login if you want to read any post!... </span>
+          </h1>
+        )}
       </section>
     </>
   );

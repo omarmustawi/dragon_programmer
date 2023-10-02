@@ -88,6 +88,7 @@ export default function Courses() {
                     description={course.description}
                     price={course.price}
                     term={course.hours}
+                    teacher={course.teacher}
                     setWidth={"w-10/12 sm:w-4/6 md:w-full xl:w-3/10 "}
                     subscribe={course.subscribe}
                   />

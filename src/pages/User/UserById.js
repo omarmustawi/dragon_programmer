@@ -5,9 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 // I IMPORT THE token HERE
 import { token } from "../../utility";
 import Alert from "../../components/Alert/Alert";
-
-
-
+import Course from "../../components/Course";
 
 export default function UserById() {
   // GET id THAT WE HAVE CHOOSEN
@@ -15,15 +13,15 @@ export default function UserById() {
   let id = location.pathname;
   id = id.match(/\d+/);
 
-  
   // STORE USER'S INFO
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [role, setRole] = useState("");
   const [jointCourses, setJointCourses] = useState("");
+  const [createdCourses, setCreatedCourses] = useState("");
 
   // FOR ALERT MESSAGE
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState("");
 
   // get data from database
   async function getUser() {
@@ -34,7 +32,9 @@ export default function UserById() {
         setEmail(res.data.data.user.email);
         setRole(res.data.data.user.role);
         setJointCourses(res.data.data.joinedCourses);
+        setCreatedCourses(res.data.data.createdCourses);
         console.log("res:", res);
+        console.log("id: ", id);
       })
       .catch((err) => {
         console.error("Oops! There is an error: ", err);
@@ -102,9 +102,7 @@ export default function UserById() {
           <span className="text-violet-100 block p-2">
             Role: {role === 2 ? "Owner" : role === 1 ? "Admin" : "Student"}{" "}
           </span>
-          <span className="text-violet-100 block p-2">
-            The Joined Courses : {jointCourses}
-          </span>
+
           <div>
             {role === 0 ? (
               <button onClick={() => changeToAdmin(id)} className="btnDash">
@@ -120,9 +118,54 @@ export default function UserById() {
               ""
             )}
           </div>
+          <span className="text-violet-100 block p-2 text-center  ">
+            <h1 className="font-semibold text-xl"> The Joined Courses : </h1>{" "}
+            <div className="flex gap-3 lg:gap-0 flex-wrap justify-center   items-start">
+              {typeof jointCourses === "string"
+                ? jointCourses
+                : jointCourses.map((course, key) => (
+                    <Course
+                      key={key}
+                      id={course.id}
+                      imgIntro={course.image}
+                      title={course.title}
+                      level={course.level}
+                      description={course.description}
+                      price={course.price}
+                      term={course.hours}
+                      teacher={course.teacher}
+                      setWidth="w-full lg:w-5/12  "
+                      subscribe={course.subscribe}
+                    />
+                  ))}
+            </div>
+          </span>
+          {role !== 0 && (
+            <span className="text-violet-100 block p-2 text-center ">
+              <h1 className="font-semibold text-xl"> The Created Courses : </h1>{" "}
+              <div className="flex gap-8 flex-wrap justify-center items-start">
+                {typeof createdCourses === "string"
+                  ? createdCourses
+                  : createdCourses.map((course, key) => (
+                      <Course
+                        key={key}
+                        id={course.id}
+                        imgIntro={course.image}
+                        title={course.title}
+                        level={course.level}
+                        description={course.description}
+                        price={course.price}
+                        term={course.hours}
+                        setWidth={"w-10/12 sm:w-4/6 md:w-full xl:w-3/10 "}
+                        subscribe={course.subscribe}
+                      />
+                    ))}
+              </div>
+            </span>
+          )}
         </div>
       </section>
-      {alert && message !== ""  && <Alert message={message} />}{" "}
+      {alert && message !== "" && <Alert message={message} />}{" "}
     </>
   );
 }

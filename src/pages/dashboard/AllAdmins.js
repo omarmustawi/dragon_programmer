@@ -49,13 +49,9 @@ export default function AllAdmins() {
 
   return (
     <>
-      <h1 className="text-center">
+      <h1 className="text-center text-xl font-semibold text-dashbtn">
         {" "}
         AllAdmins{" "}
-        <span className="text-red-400">
-          {" "}
-          Here even owners are showed!!!{" "}
-        </span>{" "}
       </h1>
       <Table
         header={header}

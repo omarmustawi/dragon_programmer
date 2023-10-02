@@ -9,8 +9,6 @@ export default function Course(props) {
   // // Handle Message as Alert
   const [message, setMessage] = useState("");
 
-  // // HOW TO MAKE Alert display for 10 sec
-  const [alert, setAlert] = useState(false);
 
 
   // handleSubscripe() function
@@ -35,7 +33,7 @@ export default function Course(props) {
 
   return (
     <div
-      className={`p-5 m-auto  lg:w-full ${props.setWidth}  rounded-xl shadow-gray-300 shadow-lg relative bg-gray-50`}
+      className={`p-5 mx-auto relative border-2 border-solid border-slate-200  rounded-xl  bg-gray-50 text-slate-900  ${props.setWidth}` }
     >
       <img
         className="w-full pb-2 h-60"
@@ -49,7 +47,7 @@ export default function Course(props) {
           <span> Level: </span>
           <span className="text-blue-600"> {props.level} </span>
         </div>
-        <span className="text-red-500"> Teacher:{props.teacher} </span>
+        <span className="text-red-500!"> Teacher:{props.teacher} </span>
       </div>
       <div className="flex justify-between gap-3 flex-wrap">
         <span> Price: {props.price} $ 💵</span>

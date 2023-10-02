@@ -2,11 +2,11 @@ import { Link } from "react-router-dom";
 export default function Home() {
   return (
     <div className="bg">
-      <div className="ml-20 h-full flex justify-center   flex-col gap-9 ">
-        <h1 className="text-white lg:text-5xl text-xl font-semibold">
+      <div className=" ml-10 md:ml-20 h-full flex justify-center flex-col gap-9 ">
+        <h1 className="text-white lg:text-5xl text-3xl md:text-4xl font-semibold">
           Online learning platform
         </h1>
-        <p className="text-white lg:text-3xl text-lg font-normal">
+        <p className="text-white lg:text-3xl text-2xl font-normal">
           Build skills with our courses, certificates,
           <br /> and degrees online from world-class
           <br /> universities and companies

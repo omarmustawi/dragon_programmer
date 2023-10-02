@@ -1,33 +1,97 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import Cookies from "universal-cookie";
+import { token } from "../../utility";
+import { Link } from "react-router-dom";
 
 export default function Notefictions() {
   //  FOR STORE NOTEFICATIONS
   const [read, setRead] = useState([]);
   const [unRead, setUnRead] = useState([]);
-  // TO GET TOKEN
-  const cookie = new Cookies();
-  const token = cookie.get("token");
   useEffect(() => {
     try {
       axios
         .get(`http://127.0.0.1:8000/api/admin/notify/users?token=${token}`)
-        .then((res) => setUnRead(res.data.data.unread_notifications));
-      // .then((res) => console.log("res :", res.data )  );
+        .then((res) => {
+          console.log("res :", res);
+          setUnRead(res.data.data.unread_notifications);
+          setRead(res.data.data.readed_notifications);
+        });
     } catch (err) {
       console.error("Oops! There is an error: ", err);
     }
   }, []);
+  console.log(read);
 
   return (
     <>
-      <h1>Notefictions</h1>
-      { unRead.length === 0 ? (
-        <h1 className="text-xl text-red-500 text-center font-semibold"> Oops! There is no any unread Notefiction. </h1>
-      ) : (
-        unRead
-      )}
+      <h1 className="text-center text-xl font-semibold text-dashbtn">
+        Notefictions
+      </h1>
+      {/* unReaded */}
+      <div className="text-center ">
+        {typeof unRead === "string" ? (
+          <h1 className="text-xl text-red-500 text-center font-semibold">
+            {" "}
+            Oops! There is no any unread Notefiction.{" "}
+          </h1>
+        ) : (
+          unRead.map((item) => (
+            <Link
+              to={`/controllPannel/newRegistration`}
+              className="w-11/12 mx-auto my-2 bg-cyan-50  rounded-lg shadow-md flex  justify-around text-slate-600"
+            >
+              <span className="p-4 ">
+                {" "}
+                Name: <span className="text-sky-700"> {item.name} </span>{" "}
+              </span>
+              <span className="p-4 ">
+                Email: <span className="text-amber-600"> {item.email} </span>{" "}
+              </span>
+              <span className="p-4 ">The account needs to verify </span>
+              <span className="p-4 ">
+                It was created since:{" "}
+                <span className="text-sky-700 font-semibold">
+                  {" "}
+                  {item.created_at}{" "}
+                </span>
+              </span>
+            </Link>
+          ))
+        )}
+      </div>
+
+      {/* readed */}
+      <div className="text-center ">
+        {typeof read === "string" ? (
+          <h1 className="text-xl text-red-500 text-center font-semibold">
+            {" "}
+            Oops! There is no any unread Notefiction.{" "}
+          </h1>
+        ) : (
+          read.map((item) => (
+            <Link
+              to={`/controllPannel/users/${item.id}`}
+              className="w-11/12 mx-auto my-2 bg-white  rounded-lg shadow-md flex  justify-around text-slate-600"
+            >
+              <span className="p-4 ">
+                {" "}
+                Name: <span className="text-sky-700"> {item.name} </span>{" "}
+              </span>
+              <span className="p-4 ">
+                Email: <span className="text-amber-600"> {item.email} </span>{" "}
+              </span>
+              <span className="p-4 ">The account was verified since  <span className="text-sky-700 font-semibold"> {item.verify} </span> by  <span className="text-sky-700"> {item.verifyBy} </span>  </span>
+              <span className="p-4 ">
+                It was created since:{" "}
+                <span className="text-sky-700 font-semibold">
+                  {" "}
+                  {item.created_at}{" "}
+                </span>
+              </span>
+            </Link>
+          ))
+        )}
+      </div>
     </>
   );
 }

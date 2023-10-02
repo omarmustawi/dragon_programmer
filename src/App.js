@@ -9,7 +9,6 @@ import User from "./pages/User/User";
 import Navbar from "./components/Navbar/Navbar";
 import CoursePage from "./pages/Courses/CoursePage";
 import Blogs from "./pages/Blogs/Blogs";
-import Post from "./components/Post";
 import Footer from "./components/Footer";
 import Err404 from "./pages/Errors/Err404";
 import { useEffect, useState } from "react";
@@ -27,10 +26,7 @@ import NewRegistration from "./pages/dashboard/NewRegistration";
 import EditCourse from "./pages/Courses/EditCourse";
 import AddVideo from "./pages/dashboard/AddVideo";
 import AddPost from "./pages/Blogs/AddPost";
-import {
-  AllComments,
-  AllCommentsProvider,
-} from "./components/Context/CommentsContext";
+import Events from "./pages/dashboard/Events";
 
 export default function App() {
   const [scrollY, setScrollY] = useState(window.scrollY);
@@ -59,6 +55,7 @@ export default function App() {
           <Route path="newRegistration" element={<NewRegistration />} />
           <Route path="addCourse" element={<AddCourse />} />
           <Route path="addPost" element={<AddPost />} />
+          <Route path="events" element={<Events />} />
           <Route
             path="allCoursesControllPannel"
             element={<AllCoursesControllPannel />}

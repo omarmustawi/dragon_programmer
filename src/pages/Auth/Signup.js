@@ -2,7 +2,6 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import logo from "../../images/loder.png.webp";
-import Cookies from "universal-cookie";
 export default function Signup() {
   // DATA USER FOR SIGNUP
   const [user, setUser] = useState({
@@ -13,8 +12,6 @@ export default function Signup() {
 
   // NAV AFTER LOGIN
   const navigate = useNavigate();
-  // COOKIE
-  const cookie = new Cookies();
 
   // SUBMIT FORM SIGNUP
   async function handleSubmit(e) {
@@ -26,9 +23,6 @@ export default function Signup() {
           email: user.email[0],
           password: user.password[0],
         })
-        .then((res) => {
-          console.log("res: ", res);
-        });
       navigate("/login", { replace: true });
     } catch (err) {
       console.log(err);
