@@ -9,7 +9,6 @@ export default function Events() {
       axios
         .get(`http://127.0.0.1:8000/api/admin/events?token=${token}`)
         .then((res) => {
-          console.log("res: ", res);
           set_events(res.data.data);
         });
     } catch (err) {

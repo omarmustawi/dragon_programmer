@@ -11,7 +11,6 @@ export default function AddVideo() {
 
   // TO STORE MESSAGE
   const [message, setMessage] = useState("");
-  console.log("message: ", message);
 
   //   GET course_id WHICH I CHOOSE IT
   const location = useLocation();
@@ -32,7 +31,6 @@ export default function AddVideo() {
           form
         )
         .then((res) => {
-          console.log("resVideo: ", res);
           if (res.data.status === 201) setMessage(res.data.message);
           else {
             setMessage("the operation failed");

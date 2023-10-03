@@ -24,7 +24,6 @@ export default function Course(props) {
           headers: { Authorization: `Bearer ${token}` }, // Corrected "Authentication" to "Authorization"
         }
       );
-      console.log("response: ", res.data.data);
       setMessage(res.data.data);
       setSubscribe(1);
     } catch (err) {

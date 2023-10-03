@@ -11,18 +11,17 @@ export default function Post(props) {
 
   const contextComment = useContext(AllComments);
 
-  console.log("comments: " , contextComment.comments);
 
   async function getComment() {
     try {
       await axios
         .get(`http://127.0.0.1:8000/api/user/comments?id=${props.post_id}`)
         .then((res) => {
-          console.log("comments: ", res.data.data);
           contextComment.setComments(res.data.data); // put comments in [comments state]
           props.setPost_id(props.post_id); // get post_id to submit a current comment
         });
       contextComment.set_post_id(props.post_id); // to select one post to display its comments not all posts
+      contextComment.set_focus(!contextComment.focus); // for change value of focus to focus on a textarea in blog
     } catch (err) {
       console.error("Oops! There is an error: ", err);
     }

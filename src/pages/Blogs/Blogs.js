@@ -14,7 +14,6 @@ export default function Blogs() {
   useEffect(() => {
     try {
       axios.get(`http://127.0.0.1:8000/api/user/posts`).then((res) => {
-        console.log("res:", res.data.data);
         setPosts(res.data.data);
       });
     } catch (err) {
@@ -26,7 +25,6 @@ export default function Blogs() {
   const [comment, setComment] = useState("");
   const [post_id, setPost_id] = useState("");
 
-  console.log("current comment", comment);
   const handleChange = (e) => {
     setComment(e.target.value);
     updateTextareaRows(e.target);
@@ -45,9 +43,9 @@ export default function Blogs() {
 
   // ============ start handle submit comment =============
   async function handleSubmit(e) {
-    console.log("id_replay: ", contextComment.id_reply);
     e.preventDefault();
     if (contextComment.id_reply === "") {
+      // add a comment on a post
       try {
         await axios
           .post(
@@ -61,11 +59,11 @@ export default function Blogs() {
             }
           )
           .then((res) => {
-            console.log("resAdd Comment: ", res);
-            contextComment.setComments([
-              ...contextComment.comments,
-              res.data.data,
-            ]);
+            if (res.data.status === 201)
+              contextComment.setComments([
+                ...contextComment.comments,
+                res.data.data,
+              ]);
           });
         contextComment.setPost_id("");
         setComment("");
@@ -85,7 +83,6 @@ export default function Blogs() {
             }
           )
           .then((res) => {
-            console.log("resAdd Comment: ", res);
             // Update the comments array to add the new reply
             contextComment.setComments((comments) =>
               comments.map((comment) => {
@@ -107,13 +104,12 @@ export default function Blogs() {
     }
   }
   // ============ end handle submit comment =============
+  // for focus on textarea
   useEffect(() => {
     const textarea = document.getElementById("textarea");
-    // console.log("textarea: ", textarea);
     if (contextComment.post_id !== "" || contextComment.id_reply !== "")
       textarea.focus();
-    console.log("run");
-  }, [contextComment.id_reply]);
+  }, [contextComment.focus]); //contextComment.id_reply , contextComment.post_id
 
   return (
     <>

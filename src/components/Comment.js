@@ -14,7 +14,7 @@ export default function Comment(props) {
     try {
       if (props.kind === "comment" && props.it_is_for === "post") {
         // Deleting a normal comment on a post
-        console.log("Deleting a normal comment on a post" , id );
+        console.log("Deleting a normal comment on a post", id);
         await axios
           .post(
             `http://127.0.0.1:8000/api/user/delete-comment?token=${token}`,
@@ -34,7 +34,6 @@ export default function Comment(props) {
             `http://127.0.0.1:8000/api/user/course/${id}/destroy-comment?token=${token}`
           )
           .then((res) => {
-            console.log("delete comment res: ", res);
             contextComment.setComments((prev) =>
               prev.filter((item) => item.comment_id !== id)
             );
@@ -45,23 +44,14 @@ export default function Comment(props) {
         await axios
           .post(`http://127.0.0.1:8000/api/user/delete/${id}?token=${token}`)
           .then((res) => {
-            console.log("delete reply res: ", res);
-            console.log("props.comment_id: ", props.comment_id);
             contextComment.setComments((comments) =>
               comments.map((comment) => {
                 if (comment.comment_id === props.comment_id) {
-                  console.log(
-                    "props.comment_id: ",
-                    props.comment_id,
-                    " comment.comment_id: ",
-                    comment.comment_id
-                  );
                   // Check if the reply exists before filtering
                   if (comment.replies) {
                     comment.replies = comment.replies.filter(
                       (item) => item.replay.id !== id
                     );
-                    console.log("replies: ", comment);
                   }
                 }
                 return comment;
@@ -77,23 +67,14 @@ export default function Comment(props) {
             `http://127.0.0.1:8000/api/user/course/delete-replay/${id}?token=${token}`
           )
           .then((res) => {
-            console.log("delete reply res: ", res);
-            console.log("props.comment_id: ", props.comment_id);
             contextComment.setComments((comments) =>
               comments.map((comment) => {
                 if (comment.comment_id === props.comment_id) {
-                  console.log(
-                    "props.comment_id: ",
-                    props.comment_id,
-                    " comment.comment_id: ",
-                    comment.comment_id
-                  );
                   // Check if the reply exists before filtering
                   if (comment.replies) {
                     comment.replies = comment.replies.filter(
                       (item) => item.replay.id !== id
                     );
-                    console.log("replies: ", comment);
                   }
                 }
                 return comment;
@@ -107,7 +88,6 @@ export default function Comment(props) {
     }
   }
   // ======= end deleteComment ===========
-
 
   return (
     <div key={props.comment_id}>
@@ -147,6 +127,7 @@ export default function Comment(props) {
                 props.kind === "comment"
                   ? contextComment.set_id_reply(props.comment_id)
                   : contextComment.set_id_reply(props.reply_id);
+                contextComment.set_focus(!contextComment.focus);
               }}
               className="text-center text-blue-400 font-bold hover:text-dashbtnHover flex m-auto "
             >

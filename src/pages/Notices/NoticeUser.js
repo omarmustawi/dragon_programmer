@@ -7,21 +7,17 @@ export default function NoticeUser() {
   const [read, setRead] = useState([]);
   const [unRead, setUnRead] = useState([]);
 
-  console.log("read: " , read );
-  console.log("unread: " , unRead );
+
 
   async function notices() {
     try {
       axios
         .get(`http://127.0.0.1:8000/api/user/notifications?token=${token}`)
         .then((res) => {
-          console.log("res: ", res);
           setRead(res.data.data.readed_notifications);
           // if( res.data.data.new_registration)
           setUnRead(res.data.data.unread_notifications);
         });
-      console.log("read:", read);
-      console.log("unread:", unRead);
     } catch (err) {
       console.error("Oops! there is an error:", err);
     }

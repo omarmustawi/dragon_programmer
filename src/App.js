@@ -73,6 +73,9 @@ export default function App() {
             />
           </Route>
         </Route>
+        {/* If nav to any url which is not exist */}
+        <Route path="/*" element={<Err404 />} />
+        {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
@@ -82,7 +85,6 @@ export default function App() {
         <Route path="/courses/:id" element={<CoursePage />} />{" "}
         {/* HERR WHEN I AM IN COURSES LIST PAGE  AND THEN I MOVE TO A COURSE PAGE */}
         <Route path="/blogs" element={<Blogs />} />
-        <Route path="/err404" element={<Err404 />} />
         <Route path="/noticeUser" element={<NoticeUser />} />
       </Routes>
       <Footer />

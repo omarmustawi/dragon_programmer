@@ -9,9 +9,7 @@ export default function Sidebar() {
   const windowSize = windowSizeWidth.windowSize;
 
   const menu = useContext(MenuContext);
-  console.log("menu: ", menu);
   const isOpen = menu.isOpen;
-  console.log("isOpen: ", isOpen);
 
   return (
     <>

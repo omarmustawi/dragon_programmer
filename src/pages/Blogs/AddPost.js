@@ -16,11 +16,9 @@ export default function AddPost() {
     form.append("title", title);
     form.append("body", body);
     try {
-      console.log("in");
-      let res = await axios
+       await axios
         .post(`http://127.0.0.1:8000/api/admin/post?token=${token}`, form)
         .then((res) => {
-          console.log("result:", res);
           setMessage(res.data.message);
         });
     } catch (err) {

@@ -1,4 +1,4 @@
-import { token, currentUserId, name } from "../../utility";
+import { token , name } from "../../utility";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import SlidesCourses from "../../components/SlidesCourses";
@@ -10,18 +10,12 @@ export default function User() {
 
   const [joinedCourse, setJoinedCourse] = useState([]);
 
-  console.log(
-    "createdCourses in profile: ",
-    createdCourses[0],
-  );
-
   useEffect(() => {
     axios
       .get(
         `http://127.0.0.1:8000/api/user/edit?token=${token}`
       )
       .then((res) => {
-        console.log("res", res);
         setCreatedCourses(res.data.data.createdCourses);
         setJoinedCourse(res.data.data.joinedCourses);
       });

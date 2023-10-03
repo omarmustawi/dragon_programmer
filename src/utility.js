@@ -33,14 +33,12 @@ const Forma = (props) => {
             `http://127.0.0.1:8000/api/user/course/info/${id_course}?token=${token}`
           )
           .then((res) => {
-            console.log("response: ", res);
             setTitle(res.data.data.course.title);
             setDescription(res.data.data.course.description);
             setLevel(res.data.data.course.level);
             setHours(res.data.data.course.hours);
             setPrice(res.data.data.course.price);
             setPhoto(res.data.data.course.photo);
-            console.log("title: ", title, description); //
           });
       } catch (err) {
         console.error("Oops! There is an error: ", err);
@@ -70,7 +68,6 @@ const Forma = (props) => {
 
     try {
       let res = await axios.post(props.api, form);
-      console.log("111: ", res);
       setMessage(res.data.message);
     } catch (err) {
       console.error("Oops! There is an error: ", err);

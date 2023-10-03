@@ -9,7 +9,6 @@ export default function ControllPannel() {
   const menu = useContext(MenuContext);
   function handleOpenSidebar() {
     menu.setIsOpen(!menu.isOpen);
-    console.log("isOpen: ", menu.isOpen);
   }
   return (
     <section className="min-h-screen w-screen absolute bg-dash1">

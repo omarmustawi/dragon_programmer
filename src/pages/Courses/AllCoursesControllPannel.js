@@ -14,7 +14,6 @@ export default function AllCoursesControllPannel() {
       .then((res) => {
         setCourses(res.data.data);
       });
-      console.log("res:", res);
     } catch (err) {
       console.error("Oops! There is an error: ", err);
     }

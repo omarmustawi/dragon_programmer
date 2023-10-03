@@ -23,12 +23,7 @@ export default function CoursePage() {
   // TO GET COMMENTS FROM Commentscontext
   const all_comments = useContext(AllComments);
 
-  console.log(
-    "post_id: ",
-    all_comments.post_id,
-    "id_reply: ",
-    all_comments.id_reply
-  );
+
 
   const inputRef = useRef(null);
 
@@ -44,7 +39,6 @@ export default function CoursePage() {
   // handle submit comment
   async function submitComment(e) {
     e.preventDefault();
-    console.log("", all_comments.id_reply);
     try {
       if (all_comments.id_reply !== "") {
         // replay
@@ -54,7 +48,6 @@ export default function CoursePage() {
           `http://127.0.0.1:8000/api/user/course/replay-comment/${all_comments.id_reply}?token=${token}`,
           { replay: commentCurrent }
         );
-        console.log("ressReplay", res);
         all_comments.setComments((comments) =>
           comments.map((comment) => {
             if (comment.comment_id === all_comments.id_reply) {
@@ -82,7 +75,6 @@ export default function CoursePage() {
             { comment: commentCurrent }
           )
           .then((res) => {
-            console.log("res add comment: ", res);
             all_comments.setComments([...all_comments.comments, res.data.data]);
             setCommentCurrent("");
           });
@@ -101,7 +93,6 @@ export default function CoursePage() {
           `http://127.0.0.1:8000/api/user/course/info/${id_course}?token=${token}`
         )
         .then((res) => {
-          console.log("res course: ", res);
           setVideos(res.data.data.video);
           setCourseInfo(res.data.data.course);
           setTeacherInfo(res.data.data.teacher);
@@ -110,7 +101,6 @@ export default function CoursePage() {
             all_comments.setComments(res.data.data.comments);
           }
         });
-      console.log("all_comments111: ", all_comments.comments);
     } catch (err) {
       console.error("Oops! There is an error:", err);
     }

@@ -12,7 +12,6 @@ export default function Notefictions() {
       axios
         .get(`http://127.0.0.1:8000/api/admin/notify/users?token=${token}`)
         .then((res) => {
-          console.log("res :", res);
           setUnRead(res.data.data.unread_notifications);
           setRead(res.data.data.readed_notifications);
         });
@@ -20,7 +19,6 @@ export default function Notefictions() {
       console.error("Oops! There is an error: ", err);
     }
   }, []);
-  console.log(read);
 
   return (
     <>

@@ -15,7 +15,6 @@ import "swiper/css";
 import Course from "./Course";
 
 export default function SlidesCourses({ courses }) {
-  console.log("courses in slide: ", courses);
   return (
     <Swiper
       // install Swiper modules
@@ -48,8 +47,8 @@ export default function SlidesCourses({ courses }) {
       autoplay={{ delay: 4000 }}
       navigation
       scrollbar={{ draggable: true }}
-      onSlideChange={() => console.log("slide change")}
-      onSwiper={(swiper) => console.log(swiper)}
+      // onSlideChange={() => console.log("slide change")}
+      // onSwiper={(swiper) => console.log(swiper)}
     >
       {courses.map((course) => (
         <SwiperSlide key={course.id}>

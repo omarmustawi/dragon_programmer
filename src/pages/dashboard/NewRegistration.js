@@ -12,7 +12,6 @@ export default function NewRegistration() {
     axios
       .get(`http://127.0.0.1:8000/api/admin/new?token=${token}`)
       .then((res) => {
-        console.log("new: ", newRegistration);
         setNewRegistration(res.data.data);
       });
     // .then((res) => setNewRegistration(res.data.data));
@@ -34,7 +33,6 @@ export default function NewRegistration() {
 
   // DELETE USER
   function handleDelete(id) {
-    console.log("id: ", id);
     axios
       .delete(
         `http://127.0.0.1:8000/api/admin/user/delete/${id}?token=${token}`
@@ -50,7 +48,6 @@ export default function NewRegistration() {
     axios
       .post(`http://127.0.0.1:8000/api/admin/user/verify/${id}?token=${token}`)
       .then((res) => {
-        console.log("res of varify: ", res);
         setMessage(res.data.message);
       })
       .then((res) =>

@@ -16,22 +16,18 @@ export default function SearchAboutUser() {
 
   // HANDLE SEARCH ABOUT USER
   async function handleSearch() {
-    console.log("THE USER THAT I HAVE LOOKED FOR HIM :", search);
     let res = await axios.post(`http://127.0.0.1:8000/api/user/search`, {
       search,
     });
-    console.log("res", res.data.data);
     setDataSearch(res.data.data);
   }
 
   // DELETE USER
   function handleDelete(id) {
-    console.log("id: ", id);
     axios
       .delete(
         `http://127.0.0.1:8000/api/admin/user/delete/${id}?token=${token}`
       )
-      .then((res) => console.log("res: ", res))
       .then((res) =>
         setDataSearch((prev) => prev.filter((item) => item.id !== id))
       )

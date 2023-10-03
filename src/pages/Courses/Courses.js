@@ -19,7 +19,7 @@ export default function Courses() {
   // get courses from back
   async function getCourses() {
     try {
-      let res = await axios
+      await axios
         .get(`http://127.0.0.1:8000/api/user/courses?token=${token}`)
         .then((res) => {
           setCourses(res.data.data);
@@ -40,8 +40,6 @@ export default function Courses() {
       .get(`http://127.0.0.1:8000/api/user/search-uc?search=${searchObject}`)
       .then((res) => setSearchedCourses(res.data.data.result));
   }
-  // console.log("searchedCourses.", typeof searchedCourses);
-  // console.log("courses.", typeof courses);
 
   return (
     <section>

@@ -7,11 +7,9 @@ export default function Logout() {
   // DELETE INFO CURRENT USER FROM COOKIE
   async function handleLogout() {
     try {
-      let res = await axios.post("http://127.0.0.1:8000/api/user/logout", {
+      await axios.post("http://127.0.0.1:8000/api/user/logout", {
         token,
       });
-      // .then((res) => console.log(res));
-      console.log(res);
       cookie.remove("id");
       cookie.remove("token");
       cookie.remove("name");

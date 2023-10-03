@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { role } from "../../utility";
+import Err404 from "../Errors/Err404";
 
 export default function RequiredAuth({ allowedRole }) {
-  console.log(typeof role);
-  return <div>{role === 2 ? <Outlet /> : ""}</div>;
+  return <div>{allowedRole.includes(role) ? <Outlet /> : <Err404 />}</div>;
 }

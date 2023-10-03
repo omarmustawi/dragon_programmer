@@ -15,17 +15,14 @@ export default function Users() {
 
   // DELETE USER
   function handleDelete(id) {
-    console.log("id: ", id);
     axios
       .delete(
         `http://127.0.0.1:8000/api/admin/user/delete/${id}?token=${token}`
       )
-      .then((res) => console.log("res: ", res))
       .then((res) => setUsers((prev) => prev.filter((item) => item.id !== id)))
       .catch((err) => console.error("Oops! there is an error: ", err));
   }
 
-  console.log("users", users);
 
   // HEADER FOR TABLE
   const header = [
