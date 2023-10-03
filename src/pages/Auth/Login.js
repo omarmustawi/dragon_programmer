@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import logo from "../../images/loder.png.webp";
 import axios from "axios";
 import Cookies from "universal-cookie";
-import Alert from "../../components/Alert/Alert";
+import Loading from "../../components/Loading";
+import { loadingCreate } from "../../components/Context/loadingContext";
 
 export default function Login() {
   // DATA USER FOR LOGIN
@@ -12,6 +13,8 @@ export default function Login() {
     password: "",
   });
 
+  const loadingContext = useContext(loadingCreate);
+
   // NAV AFTER LOGIN
   const navigate = useNavigate();
   // COOKIE
@@ -19,12 +22,12 @@ export default function Login() {
   // SUBMIT FORM LOGIN
   async function handleSubmit(e) {
     e.preventDefault();
+    loadingContext.set_is_loading(!loadingContext.is_loading);
     try {
-      let res = await axios
-        .post("http://127.0.0.1:8000/api/user/login", {
-          email: user.email[0],
-          password: user.password[0],
-        })
+      let res = await axios.post("http://127.0.0.1:8000/api/user/login", {
+        email: user.email[0],
+        password: user.password[0],
+      });
 
       // STORE COOKIE
       const token = res.data.data.token;
@@ -43,6 +46,8 @@ export default function Login() {
 
       // FOR token CHANGE
       window.location.reload();
+
+      loadingCreate.set_is_loading(!loadingCreate.is_loading);
     } catch (err) {
       console.log("err", err);
     }
@@ -54,6 +59,7 @@ export default function Login() {
 
   return (
     <div className="flex justify-center items-center min-h-screen bg">
+      {loadingContext.is_loading && <Loading />}
       <div
         style={{ background: "rgb(255 211 211 / 67%)" }}
         className="text-white font-medium  rounded-3xl sm:w-2/4 lg:w-1/3 w-10/12   p-10"

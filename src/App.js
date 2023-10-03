@@ -27,6 +27,7 @@ import EditCourse from "./pages/Courses/EditCourse";
 import AddVideo from "./pages/dashboard/AddVideo";
 import AddPost from "./pages/Blogs/AddPost";
 import Events from "./pages/dashboard/Events";
+import RequiredAuth from "./pages/Auth/RequiredAuth";
 
 export default function App() {
   const [scrollY, setScrollY] = useState(window.scrollY);
@@ -45,26 +46,32 @@ export default function App() {
     <>
       <Navbar />
       <Routes>
-        <Route path="/controllPannel" element={<ControllPannel />}>
-          <Route path="users" element={<Users />} />
-          <Route path="users/:id" element={<UserById />} />
-          <Route path="searchAboutUser" element={<SearchAboutUser />} />
-          <Route path="searchAboutUser/:id" element={<UserById />} />
-          <Route path="notefictions" element={<Notefictions />} />
-          <Route path="allAdmins" element={<AllAdmins />} />
-          <Route path="newRegistration" element={<NewRegistration />} />
-          <Route path="addCourse" element={<AddCourse />} />
-          <Route path="addPost" element={<AddPost />} />
-          <Route path="events" element={<Events />} />
-          <Route
-            path="allCoursesControllPannel"
-            element={<AllCoursesControllPannel />}
-          />
-          <Route path="allCoursesControllPannel/:id" element={<EditCourse />} />
-          <Route
-            path="allCoursesControllPannel/addVideo/:id"
-            element={<AddVideo />}
-          />
+        {/* Protected Routes */}
+        <Route element={<RequiredAuth allowedRole={[2, 1]} />}>
+          <Route path="/controllPannel" element={<ControllPannel />}>
+            <Route path="users" element={<Users />} />
+            <Route path="users/:id" element={<UserById />} />
+            <Route path="searchAboutUser" element={<SearchAboutUser />} />
+            <Route path="searchAboutUser/:id" element={<UserById />} />
+            <Route path="notefictions" element={<Notefictions />} />
+            <Route path="allAdmins" element={<AllAdmins />} />
+            <Route path="newRegistration" element={<NewRegistration />} />
+            <Route path="addCourse" element={<AddCourse />} />
+            <Route path="addPost" element={<AddPost />} />
+            <Route path="events" element={<Events />} />
+            <Route
+              path="allCoursesControllPannel"
+              element={<AllCoursesControllPannel />}
+            />
+            <Route
+              path="allCoursesControllPannel/:id"
+              element={<EditCourse />}
+            />
+            <Route
+              path="allCoursesControllPannel/addVideo/:id"
+              element={<AddVideo />}
+            />
+          </Route>
         </Route>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />

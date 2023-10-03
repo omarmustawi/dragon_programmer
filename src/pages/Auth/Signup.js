@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import logo from "../../images/loder.png.webp";
+import Loading from "../../components/Loading";
 export default function Signup() {
   // DATA USER FOR SIGNUP
   const [user, setUser] = useState({
@@ -17,12 +18,11 @@ export default function Signup() {
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      let res = await axios
-        .post("http://127.0.0.1:8000/api/user/register", {
-          name: user.name[0],
-          email: user.email[0],
-          password: user.password[0],
-        })
+      await axios.post("http://127.0.0.1:8000/api/user/register", {
+        name: user.name[0],
+        email: user.email[0],
+        password: user.password[0],
+      });
       navigate("/login", { replace: true });
     } catch (err) {
       console.log(err);

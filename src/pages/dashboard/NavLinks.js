@@ -6,6 +6,11 @@ import { MdAdminPanelSettings, MdEventAvailable, MdOutlinePlayLesson, MdOutlineP
 
 export const links = [
   {
+    name: "Home",
+    path: "/",
+    icon: <BiHomeAlt size={30} />,
+  },
+  {
     name: "All Users",
     path: "users",
     icon: <FaUsers size={30} />,
@@ -49,10 +54,5 @@ export const links = [
     name: "Events",
     path: "events",
     icon: <MdEventAvailable size={30} />,
-  },
-  {
-    name: "Home",
-    path: "/",
-    icon: <BiHomeAlt size={30} />,
   },
 ];

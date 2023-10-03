@@ -27,7 +27,7 @@
     @apply flex flex-col items-center justify-center gap-4 p-7;
   }
   .postStyle {
-    @apply overflow-hidden max-h-24 lg:text-lg  text-zinc-600;
+    @apply lg:text-lg  text-zinc-600;
   }
   .rounded-input {
     @apply border-slate-300 border-2 rounded-full p-3 px-5 outline-none;
@@ -57,7 +57,13 @@
     @apply my-10 md:w-10/12 m-auto;
   }
   .video-item {
-    @apply bg-gray-600 my-1 rounded-xl p-2 w-10/12 m-auto text-white flex justify-between items-center cursor-pointer focus:bg-red-500;
+    @apply my-1 rounded-xl p-2 w-10/12 m-auto text-white flex justify-between items-center cursor-pointer focus:bg-red-500;
+  }
+  .info-about-me {
+    @apply sm:flex-row sm:gap-0  lg:flex-col lg:gap-2  lg:w-1/2 xl:flex-row gap-2 flex flex-col justify-center items-center w-full  pb-4;
+  }
+  .style-comment {
+    @apply bg-white py-2 px-7 rounded-3xl w-fit md:rounded-full  my-3 shadow-md relative;
   }
 }
 /*============= start remove style scroll bar ============== */
@@ -75,7 +81,6 @@ body::-webkit-scrollbar-thumb {
   background: transparent; /* Color of the thumb */
 }
 /* ============== end remove style scroll bar ============= */
-
 
 /*========= start responsive table for screen small========== */
 /* Apply responsive styling for small screens */
@@ -107,9 +112,8 @@ body::-webkit-scrollbar-thumb {
 }
 @media (max-width: 550px) {
   table tbody tr {
-  width: 100%;  
+    width: 100%;
   }
-
 }
 /* ========== end responsive table for screen small ============ */
 

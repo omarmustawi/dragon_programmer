@@ -2,6 +2,7 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 import { FiEdit } from "react-icons/fi";
 import { Link, useLocation } from "react-router-dom";
 import { RiVideoAddFill } from "react-icons/ri";
+import { role } from "../../utility";
 
 export default function Table({
   header,
@@ -51,11 +52,15 @@ export default function Table({
         {row.id !== currentUser &&
         row.role !== 2 &&
         !location.pathname.includes("allCoursesControllPannel") ? (
-          <RiDeleteBin5Fill
-            onClick={() => handleDelete(data[id].id)}
-            className="text-red-500 cursor-pointer"
-            size={30}
-          />
+          role === 2 || (role === 1 && row.role === 0) ? (
+            <RiDeleteBin5Fill
+              onClick={() => handleDelete(data[id].id)}
+              className="text-red-500 cursor-pointer"
+              size={30}
+            />
+          ) : (
+            ""
+          )
         ) : (
           ""
         )}
@@ -77,6 +82,10 @@ export default function Table({
               <RiVideoAddFill size={30} />
             </Link>
           </>
+        ) : location.pathname.includes("controllPannel/allAdmins") ? (
+          <Link to={`/controllPannel/users/${data[id].id}`}>
+            <FiEdit size={30} />
+          </Link>
         ) : (
           <Link to={`${data[id].id}`}>
             <FiEdit size={30} />

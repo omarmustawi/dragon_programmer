@@ -6,6 +6,7 @@ import { useLocation } from "react-router-dom";
 import { MdOutlineSlowMotionVideo } from "react-icons/md";
 import { token } from "../../utility";
 import { AllComments } from "../../components/Context/CommentsContext";
+import { TbBrandGmail } from "react-icons/tb";
 
 export default function CoursePage() {
   // TO GET id_course
@@ -22,6 +23,13 @@ export default function CoursePage() {
   // TO GET COMMENTS FROM Commentscontext
   const all_comments = useContext(AllComments);
 
+  console.log(
+    "post_id: ",
+    all_comments.post_id,
+    "id_reply: ",
+    all_comments.id_reply
+  );
+
   const inputRef = useRef(null);
 
   const focusInput = () => {
@@ -30,26 +38,7 @@ export default function CoursePage() {
     }
   };
 
-  // ============== HANDLE DELETE COMMENTS ======================
-  // DELETE COMMENT
-  // async function deleteComment(id) {
-  //   try {
-  //     await axios
-  //       .delete(
-  //         `http://127.0.0.1:8000/api/user/course/${id}/destroy-comment?token=${token}`
-  //       )
-  //       .then((res) => {
-  //         console.log("delete res: ", res.data.data);
-  //         setComments((prev) => prev.filter((item) => item.id !== id));
-  //         setReGetComment(!reGetComment)
-  //       });
-  //   } catch (err) {
-  //     console.error("Oops! There is an error:", err);
-  //   }
-  // }
-
-  // ============= START HANDLE SUBMIT COMMENT ==============
-  // TO STORE THE CURRENT COMMENT BEFORE SEND IT TO
+  // TO STORE THE CURRENT COMMENT BEFORE SEND IT TO DATA BASE
   const [commentCurrent, setCommentCurrent] = useState("");
 
   // handle submit comment
@@ -66,21 +55,35 @@ export default function CoursePage() {
           { replay: commentCurrent }
         );
         console.log("ressReplay", res);
-        console.log("newComment: ", res.data.data);
+        all_comments.setComments((comments) =>
+          comments.map((comment) => {
+            if (comment.comment_id === all_comments.id_reply) {
+              return {
+                ...comment,
+                replies: [...comment.replies, res.data.data],
+              };
+            }
+            return comment;
+          })
+        );
+        all_comments.set_id_reply("");
         setCommentCurrent("");
       } else {
         // comment
-        console.log("comment");
+        console.log(
+          "comment , id_course : ",
+          id_course,
+          "commentCurrent: ",
+          commentCurrent
+        );
         await axios
           .post(
             `http://127.0.0.1:8000/api/user/course/${id_course}/insert-comment?token=${token}`,
             { comment: commentCurrent }
           )
           .then((res) => {
-            const newComment = res.data.data;
-            all_comments.setComments(newComment);
-            // console.log("all comments: ", all_comments.comments );
-            // setComments([...comments, newComment]);
+            console.log("res add comment: ", res);
+            all_comments.setComments([...all_comments.comments, res.data.data]);
             setCommentCurrent("");
           });
       }
@@ -105,9 +108,9 @@ export default function CoursePage() {
           if (Array.isArray(res.data.data.comments)) {
             // Check if comments is an array
             all_comments.setComments(res.data.data.comments);
-            console.log("all_comments111: ", all_comments.comments);
           }
         });
+      console.log("all_comments111: ", all_comments.comments);
     } catch (err) {
       console.error("Oops! There is an error:", err);
     }
@@ -119,24 +122,25 @@ export default function CoursePage() {
   const videoRef = useRef(null);
   const [titleRef, setTitleRef] = useState();
   const [descriptionRef, setDescriptionRef] = useState();
+  const [selectedVideo, setSelectedVideo] = useState(null);
 
   // Function to play the selected video
   const playVideo = (video) => {
-    console.log("videoUrl: ", video);
     videoRef.current.src = video.url;
     setTitleRef(video.title);
     setDescriptionRef(video.description);
-    console.log("titleRef: ", titleRef, " descriptionRef: ", descriptionRef);
     videoRef.current.play();
+    setSelectedVideo(video);
   };
-  // ========= START HANDLE PLAYLIST ==========
+  // ========= END HANDLE PLAYLIST ==========
+
 
   return (
     <section>
       {/* START HEADER OF COURSE */}
       <div>
         <header className="intro  px-5 py-16 xl:px-14">
-          <div className=" flex flex-wrap lg:flex-nowrap  justify-between gap-12">
+          <div className=" flex flex-wrap lg:flex-nowrap  justify-between mt-8 gap-12">
             <img
               className="w-full h-fit md:w-4/7 lg:w-1/2 m-auto md:m-0"
               src={courseInfo.image}
@@ -156,22 +160,29 @@ export default function CoursePage() {
               <span className="text-blue-800 font-bold">
                 Level: {courseInfo.level}
               </span>
+              <div className="mt-4">
+                <p className="text-purple-900 font-bold">
+                  {" "}
+                  This Course is created by{" "}
+                  <span className="text-sky-800">
+                    {" "}
+                    {teacherInfo.name}{" "}
+                  </span>{" "}
+                </p>
+                <p className="text-purple-900 font-bold flex items-center">
+                  {" "}
+                  You can contact with {teacherInfo.name} by email:{" "}
+                  <a
+                    className="text-sky-800 "
+                    href={`mailto:${teacherInfo.email}`}
+                  >
+                    {" "}
+                    {teacherInfo.email}{" "}
+                    <TbBrandGmail className="inline-block" size={24} />
+                  </a>{" "}
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="mt-4">
-            <p className="text-purple-900 font-bold">
-              {" "}
-              This Course is created by{" "}
-              <span className="text-sky-800"> {teacherInfo.name} </span>{" "}
-            </p>
-            <p className="text-purple-900 font-bold">
-              {" "}
-              You can contact with {teacherInfo.name} by email:{" "}
-              <a className="text-sky-800" href={`mailto:${teacherInfo.email}`}>
-                {" "}
-                {teacherInfo.email}{" "}
-              </a>{" "}
-            </p>
           </div>
         </header>
       </div>
@@ -194,7 +205,11 @@ export default function CoursePage() {
             {videos.map((video, index) => (
               <div
                 key={index}
-                className="video-item"
+                className={
+                  selectedVideo === video
+                    ? "video-item bg-pink-400"
+                    : "video-item bg-gray-600"
+                }
                 onClick={() => playVideo(video)}
               >
                 <div className="flex flex-col md:flex-row md:justify-around w-full">
@@ -231,7 +246,7 @@ export default function CoursePage() {
             type="text"
             placeholder="Put your questions here: ✨"
           />
-          <button type="submit" onClick={submitComment}>
+          <button disabled={commentCurrent === "" ? true : false } type="submit" onClick={submitComment}>
             <AiOutlineSend
               className="absolute top-0 right-0 hover:text-green-700"
               cursor={"pointer"}
@@ -252,8 +267,7 @@ export default function CoursePage() {
             focusInput={focusInput}
             kind={"comment"}
             it_is_for={"course"}
-            // setIsItReplay={setIsItReplay}
-            // deleteComment={deleteComment}
+            created_at={item.created_at}
           />
         ))}
       </div>

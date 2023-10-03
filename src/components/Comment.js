@@ -1,31 +1,20 @@
 import axios from "axios";
 import { PiArrowBendDownRightBold } from "react-icons/pi";
 import { RiDeleteBin5Fill } from "react-icons/ri";
+import { FaUserPen } from "react-icons/fa6";
 import { AllComments } from "./Context/CommentsContext";
 import { useContext } from "react";
 import { token, currentUserId } from "../utility";
 
-// http://127.0.0.1:8000/api/user/delete/23
 export default function Comment(props) {
   const contextComment = useContext(AllComments);
 
   // ======= start deleteComment ===========
   async function deleteComment(id) {
-    // =========
-
-    console.log(
-      "id: ",
-      id,
-      "props.kind: ",
-      props.kind,
-      "props.it_is_for: ",
-      props.it_is_for
-      , props.kind === "comment" && props.it_is_for === "post"
-    );
-    // ======================
     try {
       if (props.kind === "comment" && props.it_is_for === "post") {
         // Deleting a normal comment on a post
+        console.log("Deleting a normal comment on a post" , id );
         await axios
           .post(
             `http://127.0.0.1:8000/api/user/delete-comment?token=${token}`,
@@ -39,6 +28,7 @@ export default function Comment(props) {
           });
       } else if (props.kind === "comment" && props.it_is_for === "course") {
         // Deleting a normal comment on a course
+        console.log("Deleting a normal comment on a course");
         await axios
           .delete(
             `http://127.0.0.1:8000/api/user/course/${id}/destroy-comment?token=${token}`
@@ -49,10 +39,43 @@ export default function Comment(props) {
               prev.filter((item) => item.comment_id !== id)
             );
           });
-      } else {
-        // Deleting a replied comment
+      } else if (props.kind === "reply" && props.it_is_for === "post") {
+        // Deleting a replied comment on Post
+        console.log("Deleting a replied comment on Post");
         await axios
           .post(`http://127.0.0.1:8000/api/user/delete/${id}?token=${token}`)
+          .then((res) => {
+            console.log("delete reply res: ", res);
+            console.log("props.comment_id: ", props.comment_id);
+            contextComment.setComments((comments) =>
+              comments.map((comment) => {
+                if (comment.comment_id === props.comment_id) {
+                  console.log(
+                    "props.comment_id: ",
+                    props.comment_id,
+                    " comment.comment_id: ",
+                    comment.comment_id
+                  );
+                  // Check if the reply exists before filtering
+                  if (comment.replies) {
+                    comment.replies = comment.replies.filter(
+                      (item) => item.replay.id !== id
+                    );
+                    console.log("replies: ", comment);
+                  }
+                }
+                return comment;
+              })
+            );
+          });
+        contextComment.set_id_reply(""); // Return to the natural position
+      } else {
+        // Deleting a replied comment on course
+        console.log("Deleting a replied comment on course");
+        await axios
+          .post(
+            `http://127.0.0.1:8000/api/user/course/delete-replay/${id}?token=${token}`
+          )
           .then((res) => {
             console.log("delete reply res: ", res);
             console.log("props.comment_id: ", props.comment_id);
@@ -83,20 +106,28 @@ export default function Comment(props) {
       console.error("Oops! There is an error:", err);
     }
   }
-
   // ======= end deleteComment ===========
+
 
   return (
     <div key={props.comment_id}>
       <div
-        style={{ minWidth: "15rem" }}
-        className="bg-white py-2 px-7 rounded-3xl w-fit md:rounded-full  my-3 shadow-md relative"
+        style={{ minWidth: "20rem" }}
+        className={
+          contextComment.id_reply === props.comment_id &&
+          props.kind === "comment"
+            ? "border-2 border-slate-300 style-comment"
+            : contextComment.id_reply === props.reply_id &&
+              props.kind === "reply"
+            ? "border-2 border-slate-300 style-comment"
+            : "style-comment"
+        }
       >
         <div>
-          <h1 className="text-gray-500 font-bold">
+          <h1 className="text-gray-500 font-bold flex">
             {" "}
-            {props.name}
-            <span className="text-blue-400">
+            <FaUserPen size={20} className="mr-3" /> {props.name}
+            <span className="text-blue-400 ml-2">
               {" ("}
               {props.role === 2
                 ? "Owner"
@@ -107,34 +138,41 @@ export default function Comment(props) {
             </span>
           </h1>
         </div>
-        <p className="text-gray-500">
-          {" "}
-          {props.text} <br />
-        </p>
-        <button
-          onClick={() => {
-            contextComment.set_id_reply(props.comment_id);
-          }}
-          className="text-center m-auto"
-        >
-          <PiArrowBendDownRightBold
-            size={20}
-            className="text-gray-500 absolute left-7 bottom-1"
-          />
-        </button>
-        {props.id_user === currentUserId ? (
-          <RiDeleteBin5Fill
-            onClick={() => {
-              props.kind === "comment"
-                ? deleteComment(props.comment_id)
-                : deleteComment(props.reply_id);
-            }}
-            size={20}
-            className="text-red-500 absolute left-24 bottom-1 cursor-pointer"
-          />
-        ) : (
-          ""
-        )}
+        <p className="text-gray-500"> {props.text}</p>
+        <div className="flex justify-between">
+          <span className="flex ">
+            <button
+              onClick={() => {
+                if (props.focusInput) props.focusInput();
+                props.kind === "comment"
+                  ? contextComment.set_id_reply(props.comment_id)
+                  : contextComment.set_id_reply(props.reply_id);
+              }}
+              className="text-center text-blue-400 font-bold hover:text-dashbtnHover flex m-auto "
+            >
+              <PiArrowBendDownRightBold size={20} />
+              reply
+            </button>
+            {props.id_user === currentUserId ? (
+              <RiDeleteBin5Fill
+                onClick={() => {
+                  props.kind === "comment"
+                    ? deleteComment(props.comment_id)
+                    : deleteComment(props.reply_id);
+                }}
+                size={20}
+                className="text-red-500 hover:text-dashbtnHover cursor-pointer ml-6"
+              />
+            ) : (
+              ""
+            )}
+          </span>
+          <div className="text-gray-400">
+            {new Date(props.created_at).toString() === "Invalid Date"
+              ? props.created_at
+              : new Date(props.created_at).toLocaleString()}
+          </div>
+        </div>
       </div>
       <div className="translate-x-7">
         {props.replies?.map((item) => (
@@ -149,11 +187,9 @@ export default function Comment(props) {
               text={item.replay.content}
               kind={"reply"}
               it_is_for={props.it_is_for}
-
+              created_at={item.replay.created_at}
               // replies={item.replay}
-              // note="this is replayed 😂"
-              // deleteComment={props.deleteComment}
-              // focusInput={focusInput}
+              focusInput={props.focusInput}
               // setIsItReplay={setIsItReplay}
             />
           </>

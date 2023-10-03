@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { BsPersonCircle } from "react-icons/bs";
 import { Link, useLocation } from "react-router-dom";
 // I IMPORT THE token HERE
-import { token } from "../../utility";
+import { role as currentUserRole, token } from "../../utility";
 import Alert from "../../components/Alert/Alert";
 import Course from "../../components/Course";
 
@@ -33,8 +33,6 @@ export default function UserById() {
         setRole(res.data.data.user.role);
         setJointCourses(res.data.data.joinedCourses);
         setCreatedCourses(res.data.data.createdCourses);
-        console.log("res:", res);
-        console.log("id: ", id);
       })
       .catch((err) => {
         console.error("Oops! There is an error: ", err);
@@ -59,32 +57,15 @@ export default function UserById() {
   // Change Role To Admin
   async function changeToAdmin(id) {
     try {
-      await axios
-        .post(
-          `http://127.0.0.1:8000/api/admin/user/prompt/${id}?token=${token}`
-        )
-        .then((res) => setMessage(res.data.message));
+      await axios.post(
+        `http://127.0.0.1:8000/api/admin/user/prompt/${id}?token=${token}`
+      );
+      // .then((res) => setMessage(res.data.message));
       setRole(1);
     } catch (err) {
       console.error("Oops! There is an error: ", err);
     }
   }
-
-  // HOW TO MAKE Alert display for 10 sec
-  const [alert, setAlert] = useState(false);
-
-  useEffect(() => {
-    // Set alert to true to display it
-    setAlert(true);
-
-    // After 10 seconds, hide the alert
-    const timeoutId = setTimeout(() => {
-      setAlert(false);
-    }, 2000); // 10000 milliseconds = 10 seconds
-
-    // Cleanup the timeout when the component unmounts
-    return () => clearTimeout(timeoutId);
-  }, [message]);
 
   return (
     <>
@@ -109,7 +90,7 @@ export default function UserById() {
                 {" "}
                 change the role to admin{" "}
               </button>
-            ) : role === 1 ? (
+            ) : role === 1 && currentUserRole === 2 ? (
               <button onClick={() => changeToUser(id)} className="btnDash">
                 {" "}
                 change the role to user{" "}
@@ -119,7 +100,10 @@ export default function UserById() {
             )}
           </div>
           <span className="text-violet-100 block p-2 text-center  ">
-            <h1 className="font-semibold text-xl"> The Joined Courses : </h1>{" "}
+            <h1 className="font-semibold text-xl pb-4">
+              {" "}
+              The Joined Courses :{" "}
+            </h1>{" "}
             <div className="flex gap-3 lg:gap-0 flex-wrap justify-center   items-start">
               {typeof jointCourses === "string"
                 ? jointCourses
@@ -142,7 +126,10 @@ export default function UserById() {
           </span>
           {role !== 0 && (
             <span className="text-violet-100 block p-2 text-center ">
-              <h1 className="font-semibold text-xl"> The Created Courses : </h1>{" "}
+              <h1 className="font-semibold text-xl pb-4">
+                {" "}
+                The Created Courses :{" "}
+              </h1>{" "}
               <div className="flex gap-8 flex-wrap justify-center items-start">
                 {typeof createdCourses === "string"
                   ? createdCourses
@@ -165,7 +152,7 @@ export default function UserById() {
           )}
         </div>
       </section>
-      {alert && message !== "" && <Alert message={message} />}{" "}
+      {message && <Alert message={message} />}{" "}
     </>
   );
 }

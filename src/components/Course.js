@@ -1,6 +1,6 @@
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { token } from "../utility";
+import { Link, useNavigate } from "react-router-dom";
+import { token, currentUserId } from "../utility";
 import { useState } from "react";
 import Alert from "./Alert/Alert";
 
@@ -9,7 +9,8 @@ export default function Course(props) {
   // // Handle Message as Alert
   const [message, setMessage] = useState("");
 
-
+  // NAV AFTER LOGIN
+  const navigate = useNavigate();
 
   // handleSubscripe() function
   async function handleSubscripe(course_id) {
@@ -33,7 +34,7 @@ export default function Course(props) {
 
   return (
     <div
-      className={`p-5 mx-auto relative border-2 border-solid border-slate-200  rounded-xl  bg-gray-50 text-slate-900  ${props.setWidth}` }
+      className={`p-5 mx-auto relative border-2 border-solid border-slate-200  rounded-xl  bg-gray-50 text-slate-900  ${props.setWidth}`}
     >
       <img
         className="w-full pb-2 h-60"
@@ -54,23 +55,26 @@ export default function Course(props) {
         <span>Hours: {props.term} </span>
       </div>
       <div className="flex justify-around">
-        {subscribe === 0 ? (
-          <button
-            onClick={() => handleSubscripe(props.id)}
-            className="btn text-white my-5 w-fit"
-          >
-            subscription
-          </button>
-        ) : (
+        {subscribe === 0 ? ( // user did not login
+          navigate("/login")
+        ) : (subscribe === 1 && currentUserId === props.teacher_id) ||
+          subscribe === 2 ? ( // (user did login and he created this course) or user is subscriber in this course
           <Link
             to={`/courses/${props.id}`}
             className="btn text-white my-5 w-fit"
           >
             Move to course
           </Link>
+        ) : ( 
+          <button
+            onClick={() => handleSubscripe(props.id)}
+            className="btn text-white my-5 w-fit"
+          >
+            subscription
+          </button>
         )}
       </div>
-     {message && <Alert message={message} />}
+      {message && <Alert message={message} />}
     </div>
   );
 }

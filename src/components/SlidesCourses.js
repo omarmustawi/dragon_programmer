@@ -15,6 +15,7 @@ import "swiper/css";
 import Course from "./Course";
 
 export default function SlidesCourses({ courses }) {
+  console.log("courses in slide: ", courses);
   return (
     <Swiper
       // install Swiper modules
@@ -54,6 +55,7 @@ export default function SlidesCourses({ courses }) {
         <SwiperSlide key={course.id}>
           <Course
             id={course.id}
+            teacher_id={course.teacher_id}
             imgIntro={course.image}
             title={course.title}
             level={course.level}

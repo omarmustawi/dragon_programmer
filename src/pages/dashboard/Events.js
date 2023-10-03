@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { name, token } from "../../utility";
-import Table from "./Table";
+import { token } from "../../utility";
 
 export default function Events() {
   const [events, set_events] = useState([]);
@@ -27,7 +26,7 @@ export default function Events() {
       <table className=" w-11/12 m-auto my-6 text-center shadow-xl rounded-xl ">
         <thead className="rounded-xl">
           <tr className="bg-slate-400 text-gray-100 ">
-            <th className="px-6 py-3 "> Id </th>
+            <th className="p-3 "> Id </th>
             <th className="px-6 py-3 "> Event </th>
             <th className="px-6 py-3 "> Created At </th>
           </tr>
@@ -35,9 +34,9 @@ export default function Events() {
         <tbody className="rounded-xl bg-white">
           {events.map((item, key) => (
             <tr className="bg-white border-b relative hover:bg-slate-200">
-              <td className="px-6 py-3 "> {key + 1} </td>
-              <td className="px-6 py-3 md:border-x-2"> {item.event} </td>
-              <td className="px-6 py-3 ">
+              <td className="p-3 "> {key + 1} </td>
+              <td className="p-3 md:border-x-2"> {item.event} </td>
+              <td className="p-3 ">
                 {" "}
                 {new Date(item.created_at).toLocaleString()}{" "}
               </td>

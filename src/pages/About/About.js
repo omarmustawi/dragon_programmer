@@ -1,9 +1,16 @@
 import myImage from "../../images/myImage.png";
 import ImageMekdad from "../../images/ImageMekdad.jpg";
-import { FaSquareFacebook, FaTelegram } from "react-icons/fa6";
+import {
+  FaSquareFacebook,
+  FaTelegram,
+  FaUserGraduate,
+  FaUserTie,
+} from "react-icons/fa6";
 import { FaInstagramSquare } from "react-icons/fa";
+import { ImProfile } from "react-icons/im";
+import { BiSolidLocationPlus } from "react-icons/bi";
 import { IoLogoWhatsapp } from "react-icons/io";
-import { BsTwitter } from "react-icons/bs";
+import { BsCalendarDay, BsTwitter } from "react-icons/bs";
 import { Link } from "react-router-dom";
 
 export default function About() {
@@ -17,28 +24,70 @@ export default function About() {
               Information About owners{" "}
             </h1>
             <div className="flex lg:flex-row flex-col gap-5 lg:gap-0">
-              {/* info about me */}
-              <div className="flex sm:flex-row sm:gap-0 gap-2 flex-col justify-center items-center lg:w-1/2 w-full lg:border-r-2 border-slate-200 lg:border-b-0 border-b-2 pb-4">
+              {/* ========== info about me =============== */}
+              <div className="info-about-me lg:border-r-2 lg:border-b-0  border-slate-200 border-b-2">
                 <img
                   src={myImage}
                   alt="myImage"
                   width={200}
                   className=" bg-gradient-to-tr from-pink-400  to-orange-200 rounded-full"
                 />
-                <div className="ml-10">
-                  <p className="text-lg md:text-xl">
-                    <span className="text-pink-500 font-bold"> Hello</span> , My
-                    name is{" "}
-                    <span className="text-pink-500 font-bold">
-                      {" "}
-                      OMAR MUSTAWY{" "}
-                    </span>
-                    , a student at Faculty of Informatics Engineering at
-                    Tishreen University. Also, I am fornt-end developer.
+                <div className="sm:ml-10 ml-0  ">
+                  <p className="flex flex-col">
+                    <div className="inline-block mb-3">
+                      <FaUserTie
+                        size={30}
+                        color="#334155"
+                        className="inline-block"
+                      />{" "}
+                      <span className="text-pink-500 font-bold align-bottom">
+                        {" "}
+                        OMAR MUSTAWY{" "}
+                      </span>
+                    </div>
+                    <div className="inline-block mb-3">
+                      <BsCalendarDay
+                        size={30}
+                        color="#334155"
+                        className="inline-block"
+                      />{" "}
+                      <span className="align-bottom">
+                        {" "}
+                        I was born in 2002-1-10{" "}
+                      </span>
+                    </div>
+                    <div className="inline-block mb-3">
+                      <BiSolidLocationPlus
+                        size={30}
+                        color="#334155"
+                        className="inline-block"
+                      />{" "}
+                      <span className="align-bottom">Lattakia, Syria</span>
+                    </div>
+                    <div className="inline-block mb-3">
+                      <FaUserGraduate
+                        size={30}
+                        color="#334155"
+                        className="inline-block"
+                      />{" "}
+                      <span className=" align-bottom">
+                        I has Graduated of Faculty of
+                        <span className="text-pink-500 font-bold">
+                          {" "}
+                          Information Engineering{" "}
+                        </span>
+                        from Tishreen University.
+                      </span>
+                    </div>
+                    <div className="inline-block mb-3">
+                      <ImProfile
+                        size={30}
+                        color="#334155"
+                        className="inline-block"
+                      />{" "}
+                      I am fornt-end developer.
+                    </div>
                   </p>
-                  <h1 className="text-slate-700 text-xl font-bold">
-                    Follow me by:{" "}
-                  </h1>
                   <div className="flex gap-8 w-fit m-auto">
                     <Link
                       to="https://www.facebook.com/omar.mestawi/"
@@ -58,16 +107,16 @@ export default function About() {
                   </div>
                 </div>
               </div>
-              {/* info about MEKDAD */}
-              <div className="flex sm:flex-row sm:gap-0 gap-2 flex-col justify-center items-center lg:w-1/2 w-full lg:border-l-2 border-slate-200 lg:border-b-0 border-b-2 pb-4 ">
+              {/* =============== info about MEKDAD =============== */}
+              <div className="info-about-me ">
                 <img
                   src={ImageMekdad}
                   alt="myImage"
                   width={200}
                   className="rounded-full h-60 ml-3"
                 />
-                <div className="ml-10">
-                  <p className="text-lg md:text-xl">
+                <div className="sm:ml-10 ml-0">
+                  {/* <p className="text-lg md:text-xl">
                     <span className="text-pink-500 font-bold"> Hello</span> I am{" "}
                     <span className="text-pink-500 font-bold">
                       MEKDAD GHAZAL{" "}
@@ -75,10 +124,62 @@ export default function About() {
                     from Syria, Lattakia. I am 22 years Graduate of Faculty of
                     Information Engineering I am Freelance, Backend Developer,
                     IT and networking engineer{" "}
+                  </p> */}
+                  <p className="flex flex-col">
+                    <div className="inline-block mb-3">
+                      <FaUserTie
+                        size={30}
+                        color="#334155"
+                        className="inline-block"
+                      />{" "}
+                      <span className="text-pink-500 font-bold align-bottom">
+                        {" "}
+                        MEKDAD GHAZAL{" "}
+                      </span>
+                    </div>
+                    <div className="inline-block mb-3">
+                      <BsCalendarDay
+                        size={30}
+                        color="#334155"
+                        className="inline-block"
+                      />{" "}
+                      <span className="align-bottom">
+                        {" "}
+                        I was born in 2001-2-1{" "}
+                      </span>
+                    </div>
+                    <div className="inline-block mb-3">
+                      <BiSolidLocationPlus
+                        size={30}
+                        color="#334155"
+                        className="inline-block"
+                      />{" "}
+                      <span className="align-bottom">Lattakia, Syria</span>
+                    </div>
+                    <div className="inline-block mb-3">
+                      <FaUserGraduate
+                        size={30}
+                        color="#334155"
+                        className="inline-block"
+                      />{" "}
+                      <span className=" align-bottom">
+                        I has Graduated of Faculty of
+                        <span className="text-pink-500 font-bold">
+                          {" "}
+                          Information Engineering{" "}
+                        </span>
+                        from Tishreen University.
+                      </span>
+                    </div>
+                    <div className="inline-block mb-3">
+                      <ImProfile
+                        size={30}
+                        color="#334155"
+                        className="inline-block"
+                      />{" "}
+                      I Backend Developer, IT and networking engineer.
+                    </div>
                   </p>
-                  <h1 className="text-slate-700 text-xl font-bold">
-                    Follow me by:{" "}
-                  </h1>
                   <div className="flex gap-8 w-fit m-auto">
                     <Link
                       to="https://www.facebook.com/mekdad.ghazal.7/"
@@ -109,7 +210,7 @@ export default function About() {
               </div>
             </div>
 
-            {/* about our website */}
+            {/* =============== about our website =============== */}
             <section className="pt-10 text-lg md:text-xl">
               <p>
                 Welcome to{" "}

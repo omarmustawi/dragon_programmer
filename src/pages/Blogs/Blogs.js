@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState } from "react";
-import Loading from "../../components/Loading";
 import Post from "../../components/Post";
 import axios from "axios";
 import { AiOutlineSend } from "react-icons/ai";
@@ -7,22 +6,17 @@ import { token } from "../../utility";
 import { AllComments } from "../../components/Context/CommentsContext";
 
 export default function Blogs() {
-  // test
   const contextComment = useContext(AllComments);
-
-  // =======
 
   // TO STORE POSTS
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     try {
-      let res = axios
-        .get(`http://127.0.0.1:8000/api/user/posts`)
-        .then((res) => {
-          console.log("res:", res.data.data);
-          setPosts(res.data.data);
-        });
+      axios.get(`http://127.0.0.1:8000/api/user/posts`).then((res) => {
+        console.log("res:", res.data.data);
+        setPosts(res.data.data);
+      });
     } catch (err) {
       console.error("Oops! There is an error: ", err);
     }
@@ -32,6 +26,7 @@ export default function Blogs() {
   const [comment, setComment] = useState("");
   const [post_id, setPost_id] = useState("");
 
+  console.log("current comment", comment);
   const handleChange = (e) => {
     setComment(e.target.value);
     updateTextareaRows(e.target);
@@ -50,7 +45,7 @@ export default function Blogs() {
 
   // ============ start handle submit comment =============
   async function handleSubmit(e) {
-    console.log("id_replay: " , contextComment.id_reply );
+    console.log("id_replay: ", contextComment.id_reply);
     e.preventDefault();
     if (contextComment.id_reply === "") {
       try {
@@ -72,6 +67,8 @@ export default function Blogs() {
               res.data.data,
             ]);
           });
+        contextComment.setPost_id("");
+        setComment("");
       } catch (err) {
         console.error("Oops! There is an error: ", err);
       }
@@ -101,19 +98,25 @@ export default function Blogs() {
                 return comment;
               })
             );
-            contextComment.set_id_reply("");
           });
+        contextComment.set_id_reply("");
+        setComment("");
       } catch (err) {
         console.error("Oops! There is an error: ", err);
       }
     }
   }
   // ============ end handle submit comment =============
+  useEffect(() => {
+    const textarea = document.getElementById("textarea");
+    // console.log("textarea: ", textarea);
+    if (contextComment.post_id !== "" || contextComment.id_reply !== "")
+      textarea.focus();
+    console.log("run");
+  }, [contextComment.id_reply]);
 
   return (
     <>
-      {/* <Loading /> */}
-
       <section className=" bg-grayColor min-h-minHeight relative">
         <article className="intro lg:h-72 flex justify-center items-center h-48">
           <h1 className="lg:text-5xl text-3xl text-white font-semibold">
@@ -126,9 +129,9 @@ export default function Blogs() {
               <Post
                 key={post.id}
                 post_id={post.id}
-                name={post.name}
+                user={post.user}
                 title={post.title}
-                paragraph={post.body}
+                body={post.body}
                 created_at={post.created_at}
                 setPost_id={setPost_id}
               />
@@ -137,15 +140,21 @@ export default function Blogs() {
             <form onSubmit={handleSubmit} className="sticky bottom-2">
               <div className="flex bg-white p-3 border-2 border-slate-300  rounded-2xl">
                 <textarea
+                  required
                   placeholder="Leave a comment ✨"
                   className=" w-full  outline-none pr-14 "
                   name="comment"
+                  id="textarea"
                   value={comment}
-                  onChange={handleChange}
+                  onChange={(e) => handleChange(e)}
                   rows="1"
                   ref={(textarea) => textarea && updateTextareaRows(textarea)}
                 />
-                <button type="submit" className="relative">
+                <button
+                  disabled={comment === "" || post_id === "" ? true : false}
+                  type="submit"
+                  className="relative"
+                >
                   <AiOutlineSend
                     className="absolute -top-0 right-3 hover:text-green-700"
                     cursor={"pointer"}

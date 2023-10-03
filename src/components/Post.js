@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import { BiSolidCommentEdit } from "react-icons/bi";
+import { FaUserTie } from "react-icons/fa";
 import Comment from "./Comment";
 import axios from "axios";
 import { AllComments } from "./Context/CommentsContext";
@@ -9,6 +10,8 @@ export default function Post(props) {
   const [readMore, setReadMore] = useState(true);
 
   const contextComment = useContext(AllComments);
+
+  console.log("comments: " , contextComment.comments);
 
   async function getComment() {
     try {
@@ -26,38 +29,39 @@ export default function Post(props) {
   }
   return (
     <>
-      <section className="mt-10 p-4 pb-10 bg-slate-50 rounded-xl shadow-sm border relative">
-        <h1 className="text-blue-600 font-bold   lg:text-2xl text-lg mb-4">
-          {props.name}
+      <section className="mt-10 p-4 bg-slate-50 rounded-xl shadow-sm border relative">
+        <h1 className="text-blue-600 font-bold flex items-center  lg:text-2xl text-lg mb-4">
+          <FaUserTie className="mr-4" size={30} /> {props.user}
         </h1>
         <h1 className="text-slate-700 font-bold  lg:text-2xl text-lg mb-4">
           {props.title}
         </h1>
-        <p
-          style={{ whiteSpace: "pre-line" }}
-          className={readMore ? " postStyle" : "postStyle max-h-full"}
-        >
-          {props.paragraph}
+        <p style={{ whiteSpace: "pre-line" }} className={" postStyle"}>
+          {props.body.length > 200 && readMore
+            ? props.body.slice(0, 200) + "..."
+            : props.body}
         </p>
 
-        {readMore ? (
+        {readMore && props.body.length > 200 ? (
           <button
             onClick={() => setReadMore(false)}
             className="text-blue-300 hover:text-blue-400 lg:font-bold py-4"
           >
             READ MORE...
           </button>
-        ) : (
+        ) : props.body.length > 200 ? (
           <button
             onClick={() => setReadMore(true)}
             className="text-blue-300 hover:text-blue-400 lg:font-bold  py-4"
           >
             hide ...
           </button>
+        ) : (
+          ""
         )}
 
         {/* ================== bottom of post ============ */}
-        <div className="text-zinc-600 absolute flex justify-around w-full bottom-5">
+        <div className="text-gray-500 flex justify-between  bottom-5">
           <button
             onClick={getComment}
             className="flex gap-2 hover:text-green-700"
@@ -83,6 +87,7 @@ export default function Post(props) {
               replies={item.replies}
               kind={"comment"}
               it_is_for={"post"}
+              created_at={props.created_at}
             />
           ))}
         </div>

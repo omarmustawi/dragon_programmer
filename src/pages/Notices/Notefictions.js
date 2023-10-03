@@ -38,23 +38,28 @@ export default function Notefictions() {
           unRead.map((item) => (
             <Link
               to={`/controllPannel/newRegistration`}
-              className="w-11/12 mx-auto my-2 bg-cyan-50  rounded-lg shadow-md flex  justify-around text-slate-600"
+              className="w-11/12 mx-auto my-2 bg-cyan-50  rounded-lg shadow-md flex flex-col md:flex-row justify-around text-slate-600"
             >
-              <span className="p-4 ">
-                {" "}
-                Name: <span className="text-sky-700"> {item.name} </span>{" "}
-              </span>
-              <span className="p-4 ">
-                Email: <span className="text-amber-600"> {item.email} </span>{" "}
-              </span>
-              <span className="p-4 ">The account needs to verify </span>
-              <span className="p-4 ">
-                It was created since:{" "}
-                <span className="text-sky-700 font-semibold">
-                  {" "}
-                  {item.created_at}{" "}
+              <div className="text-start flex flex-wrap ">
+                <span className="px-5 text-left md:py-1 ">
+                  Name: <span className="text-sky-700"> {item.name} </span>{" "}
                 </span>
-              </span>
+                <span className="px-5 text-left md:py-1 ">
+                  Email: <span className="text-amber-600"> {item.email} </span>{" "}
+                </span>
+              </div>
+              <div className="text-start flex flex-wrap ">
+                <span  className="px-5 text-left md:py-1 ">
+                  The account needs to verify{" "}
+                </span>
+                <span  className="px-5 text-left md:py-1 ">
+                  It was created since:{" "}
+                  <span className="text-sky-700 font-semibold">
+                    {" "}
+                    {item.created_at}{" "}
+                  </span>
+                </span>
+              </div>
             </Link>
           ))
         )}
@@ -71,23 +76,34 @@ export default function Notefictions() {
           read.map((item) => (
             <Link
               to={`/controllPannel/users/${item.id}`}
-              className="w-11/12 mx-auto my-2 bg-white  rounded-lg shadow-md flex  justify-around text-slate-600"
+              className="w-11/12 mx-auto my-2 bg-white  rounded-lg shadow-md flex flex-col md:flex-row  text-slate-600"
             >
-              <span className="p-4 ">
-                {" "}
-                Name: <span className="text-sky-700"> {item.name} </span>{" "}
-              </span>
-              <span className="p-4 ">
-                Email: <span className="text-amber-600"> {item.email} </span>{" "}
-              </span>
-              <span className="p-4 ">The account was verified since  <span className="text-sky-700 font-semibold"> {item.verify} </span> by  <span className="text-sky-700"> {item.verifyBy} </span>  </span>
-              <span className="p-4 ">
-                It was created since:{" "}
-                <span className="text-sky-700 font-semibold">
+              <div className="text-start flex flex-wrap ">
+                <span className="px-5 text-left md:py-1 ">
                   {" "}
-                  {item.created_at}{" "}
+                  Name: <span className="text-sky-700"> {item.name} </span>{" "}
                 </span>
-              </span>
+                <span className="px-5 text-left md:py-1 ">
+                  Email: <span className="text-amber-600"> {item.email} </span>{" "}
+                </span>
+              </div>
+              <div className="text-start flex flex-wrap ">
+                <span className="px-5 text-left md:py-1 ">
+                  The account was verified since{" "}
+                  <span className="text-sky-700 font-semibold">
+                    {" "}
+                    {item.verify}{" "}
+                  </span>{" "}
+                  by <span className="text-sky-700"> {item.verifyBy} </span>{" "}
+                </span>
+                <span className="px-5 text-left md:py-1 ">
+                  It was created since:{" "}
+                  <span className="text-sky-700 font-semibold">
+                    {" "}
+                    {item.created_at}{" "}
+                  </span>
+                </span>
+              </div>
             </Link>
           ))
         )}

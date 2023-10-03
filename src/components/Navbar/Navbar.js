@@ -2,11 +2,11 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { VscBook } from "react-icons/vsc";
 import { BiBell } from "react-icons/bi";
 import { useContext, useEffect, useState } from "react";
-import imgUser from "../../images/imgUser.webp";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { WindowSize } from "../Context/WindowContext";
 import Logout from "../Logout";
 import { token, role } from "../../utility";
+import { FaRegUserCircle } from "react-icons/fa";
 
 export default function Navbar() {
   const windowSizeWidth = useContext(WindowSize);
@@ -20,16 +20,15 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-
   // FOR MAKE navbar DOESN'T APPEAR IN DASHBOARD
   const location = useLocation();
   if (!location.pathname.includes("controllPannel")) {
     return (
       <>
-        {windowSizeWidth.windowSize > 1024 ? (
+        {windowSizeWidth.windowSize > 1200 ? (
           <nav className={scrollY > 70 ? "bgNavbar navbar" : "navbar"}>
             <VscBook color="white" size={50} />
-            <ul className="flex items-center justify-center gap-20  xl:mr-32 ">
+            <ul className="flex items-center justify-center gap-16  lg:mr-28 ">
               <li>
                 <NavLink to="/">Home</NavLink>
               </li>
@@ -44,7 +43,7 @@ export default function Navbar() {
               </li>
               {token && role !== 0 && (
                 <li>
-                  <NavLink to="/controllPannel">Controll Pannel</NavLink>
+                  <NavLink to="/controllPannel">Dashboard</NavLink>
                 </li>
               )}
               {token ? (
@@ -56,7 +55,7 @@ export default function Navbar() {
                   </li>
                   <li>
                     <NavLink to="/user">
-                      <img className="w-9" src={imgUser} alt="" />
+                      <FaRegUserCircle size={30} />
                     </NavLink>
                   </li>
                   <li>
@@ -118,7 +117,7 @@ export default function Navbar() {
                   </li>
                   <li>
                     <NavLink to="/user">
-                      <img className="w-9" src={imgUser} alt="" />
+                      <FaRegUserCircle size={30} />{" "}
                     </NavLink>
                   </li>
                   <li>
